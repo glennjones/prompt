@@ -150,7 +150,7 @@ class OpenAI extends Model {
         // look in cache first
      
         const apiEndpoint = 'https://api.openai.com/v1/completions';
-        const apiKey = process.env.OPENAI_API_KEY;
+        const apiKey = this.apiKey;
     
         // Set up the request body with the given parameters
         const requestData = {

@@ -5,7 +5,7 @@
   "main": "index.js",
   "type": "module",
   "scripts": {
-    "start": "rollup -c ./rollup.config.js",
+    "start": "nodemon testbed.js"
   },
   "author": "",
   "license": "MIT",

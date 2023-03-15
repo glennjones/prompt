@@ -1,8 +1,15 @@
+/*
 import { Model } from './model.js';
 import { getEncoder } from './utils/bpe-encoder.js';
 import { Configuration, OpenAIApi } from 'openai';
 import axios from 'axios';
 import assert from 'node:assert/strict';
+*/
+const Model = require('./model.js');
+const { getEncoder } = require('./utils/bpe-encoder.js');
+const { Configuration, OpenAIApi } = require('openai');
+const axios = require('axios');
+const assert = require('node:assert/strict');
 
 
 // regexes for model names and their token counts
@@ -19,7 +26,7 @@ function clone(obj) {
 }
 
 
-export class OpenAI extends Model {
+class OpenAI extends Model {
 
     constructor(apiKey, model = "text-davinci-003") {
         super();
@@ -180,3 +187,4 @@ export class OpenAI extends Model {
 
 }
 
+module.exports = OpenAI;

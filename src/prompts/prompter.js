@@ -1,16 +1,25 @@
+/*
 import path from "node:path";
 import { fileURLToPath } from 'node:url';
 import * as changeCase from "change-case";
 import { jsonrepair } from 'jsonrepair'
 import Nunjucks from 'nunjucks';
+*/
+const path = require("node:path");
+const { fileURLToPath } = require('node:url');
+const changeCase = require("change-case");
+const { jsonrepair } = require('jsonrepair')
+const Nunjucks = require('nunjucks');
+
 
 function clone(obj) {
     return JSON.parse(JSON.stringify(obj));
 }
 
-const dirPath = fileURLToPath(new URL('./templates/', import.meta.url));
+// const dirPath = fileURLToPath(new URL('./templates/', import.meta.url));
+const dirPath = path.join(__dirname, 'templates');
 
-export class Prompter {
+class Prompter {
 
     // defaults
     allowedMissingVariables = ["examples", "description", "output_format"];
@@ -56,7 +65,8 @@ export class Prompter {
         */
 
         // load and render template
-        const fullPath = fileURLToPath(new URL('./templates/' + templateName, import.meta.url));
+        //const fullPath = fileURLToPath(new URL('./templates/' + templateName, import.meta.url));
+        const fullPath = path.join(this.templatesPath, templateName);
 
         let data = {}
         let keys = Object.keys(options);
@@ -110,3 +120,4 @@ export class Prompter {
 
 }
 
+module.exports = Prompter;

@@ -1,4 +1,4 @@
-export class Model {
+class Model {
     constructor(name, description) {
         this.name = name;
         this.description = description;
@@ -16,3 +16,5 @@ export class Model {
         throw new Error("Not implemented");
     }
 }
+
+module.exports = Model;

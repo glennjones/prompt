@@ -1,11 +1,13 @@
 
 
-//const {encode, decode} = require('gpt-3-encoder')
-import {encode, decode} from 'gpt-3-encoder'
+const {encode, decode} = require('gpt-3-encoder')
+//import {encode, decode} from 'gpt-3-encoder'
 
-export function getEncoder() {
+/*
+function getEncoder() {
     return new Encoder();
 }
+*/
 
 // wrap to match the interface of the python version
 class Encoder{
@@ -17,5 +19,11 @@ class Encoder{
 
     decode(tokens) {
         return decode(tokens);
+    }
+}
+
+module.exports = {
+    getEncoder() {
+        return new Encoder();
     }
 }

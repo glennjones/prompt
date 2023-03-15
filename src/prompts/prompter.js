@@ -26,16 +26,6 @@ export class Prompter {
         }
         const resolver = new Nunjucks.FileSystemLoader(this.templatesPath, { noCache: true, watch: false });
         this.environment = new Nunjucks.Environment(resolver)
-        /*
-        this.modelArgsCount = this.model.run.__code__.coArgCount;
-        this.modelVariables = this.model.run.__code__.coVarNames.slice(1, this.modelArgsCount);
-
-        if(options && options.allowedMissingVariablesh) {
-            this.allowedMissingVariables = allowedMissingVariables;
-        }
-        
-        this.environment = new Environment(loader = FileSystemLoader(templatesPath));
-        */
     }
 
     listTemplates() {

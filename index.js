@@ -4,7 +4,6 @@
 const OpenAI  = require('./src/models/openai.js');
 const Prompter  = require('./src/prompts/prompter.js');
 
-
 module.exports = { OpenAI, Prompter };
 
 

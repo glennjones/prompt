@@ -2,7 +2,13 @@
   "name": "prompt",
   "version": "1.0.0",
   "description": "",
-  "main": "index.js",
+  "main": "./index.js",
+  "exports": {
+    ".": {
+      "import": "./wrapper.mjs",
+      "require": "./index.js"
+    }
+  },
   "scripts": {
     "start": "nodemon testbed.js"
   },

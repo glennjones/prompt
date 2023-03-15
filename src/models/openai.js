@@ -1,5 +1,5 @@
-import { Model } from "./model.js";
-import { getEncoder } from "./utils/bpe-encoder.js";
+import { Model } from './model.js';
+import { getEncoder } from './utils/bpe-encoder.js';
 import { Configuration, OpenAIApi } from 'openai';
 import axios from 'axios';
 import assert from 'node:assert/strict';
@@ -179,3 +179,4 @@ export class OpenAI extends Model {
     
 
 }
+

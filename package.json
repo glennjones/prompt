@@ -3,9 +3,9 @@
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
+  "type": "module",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "node testbed.js"
+    "start": "rollup -c ./rollup.config.js",
   },
   "author": "",
   "license": "MIT",
@@ -17,7 +17,10 @@
     "gpt-3-encoder": "^1.1.4",
     "jsonrepair": "^3.0.2",
     "nunjucks": "^3.2.3",
-    "openai": "^3.2.1"
+    "openai": "^3.2.1",
+    "range-overlap": "^0.0.4"
   },
-  "type": "module"
+  "devDependencies": {
+    "nodemon": "^2.0.20"
+  }
 }

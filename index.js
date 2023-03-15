@@ -1,4 +1,3 @@
-import { OpenAI } from './src/models/openai.js';
-import { Prompter } from './src/prompts/prompter.js';
 
-export default { OpenAI, Prompter };
+export {OpenAI} from './src/models/openai.js'
+export {Prompter} from './src/prompts/prompter.js'

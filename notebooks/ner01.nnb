@@ -1,0 +1,185 @@
+{
+    "cells": [
+        {
+            "language": "markdown",
+            "source": [
+                "# Prompt - Name entity recognition (NER) - Medical"
+            ],
+            "outputs": []
+        },
+        {
+            "language": "markdown",
+            "source": [
+                "### Add Prompt module and get API key from .env file"
+            ],
+            "outputs": []
+        },
+        {
+            "language": "javascript",
+            "source": [
+                "const Prompt = require('../index.js')\nconst {Prompter, OpenAI} = Prompt;\n\nconst DotEnv = require('dotenv');\nDotEnv.config({path: '../.env'});\nconst apiKey = process.env.OPENAI_API_KEY;"
+            ],
+            "outputs": []
+        },
+        {
+            "language": "markdown",
+            "source": [
+                "### Load the model for OpenAI"
+            ],
+            "outputs": []
+        },
+        {
+            "language": "javascript",
+            "source": [
+                "let model = new OpenAI(apiKey);\nlet nlpPrompter = new Prompter(model);"
+            ],
+            "outputs": []
+        },
+        {
+            "language": "markdown",
+            "source": [
+                "### Call the prompt module \n* The `domain` property helps fucus the language model.\n* The `textInput` property is the text to be parsed."
+            ],
+            "outputs": []
+        },
+        {
+            "language": "javascript",
+            "source": [
+                "let result = await nlpPrompter.fit('ner.njk', {\n    domain: 'medical',\n    textInput: 'The patient is a 93-year-old female with a medical history of chronic right hip pain, osteoporosis, hypertension, depression, and chronic atrial fibrillation admitted for evaluation and management of severe nausea and vomiting and urinary tract infection'\n  });\nconsole.log(result);"
+            ],
+            "outputs": [
+                {
+                    "items": [
+                        {
+                            "mime": "application/vnd.code.notebook.stdout",
+                            "value": [
+                                "{",
+                                "  text: [",
+                                "    { label: 'Patient', text: 'The patient', start: 0, end: 10 },",
+                                "    { label: 'Age', text: '93-year-old', start: 14, end: 25 },",
+                                "    { label: 'Disease', text: 'osteoporosis', start: 44, end: 56 },",
+                                "    { label: 'Disease', text: 'hypertension', start: 57, end: 68 },",
+                                "    { label: 'Disease', text: 'depression', start: 69, end: 78 },",
+                                "    {",
+                                "      label: 'Disease',",
+                                "      text: 'chronic atrial fibrillation',",
+                                "      start: 79,",
+                                "      end: 107",
+                                "    },",
+                                "    {",
+                                "      label: 'Symptom',",
+                                "      text: 'severe nausea and vomiting',",
+                                "      start: 108,",
+                                "      end: 136",
+                                "    },",
+                                "    {",
+                                "      label: 'Disease',",
+                                "      text: 'urinary tract infection',",
+                                "      start: 137,",
+                                "      end: 161",
+                                "    },",
+                                "    { branch: 'Medical', group: 'History' }",
+                                "  ],",
+                                "  prompt_tokens: 236,",
+                                "  completion_tokens: 238,",
+                                "  total_tokens: 474",
+                                "}",
+                                ""
+                            ]
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "language": "markdown",
+            "source": [
+                "### With labels\n* The `domain` property helps fucus the language model.\n* The `textInput` property is the text to be parsed.\n* The `labels` array is a list entities that the model should extract. "
+            ],
+            "outputs": []
+        },
+        {
+            "language": "javascript",
+            "source": [
+                "let result = await nlpPrompter.fit('ner.njk', {\n    domain: 'medical',\n    labels: [\"SYMPTOM\", \"DISEASE\"],\n    textInput: 'The patient is a 93-year-old female with a medical history of chronic right hip pain, osteoporosis, hypertension, depression, and chronic atrial fibrillation admitted for evaluation and management of severe nausea and vomiting and urinary tract infection'\n  });\nconsole.log(result);"
+            ],
+            "outputs": [
+                {
+                    "items": [
+                        {
+                            "mime": "application/vnd.code.notebook.stdout",
+                            "value": [
+                                "{",
+                                "  text: [",
+                                "    {",
+                                "      label: 'SYMPTOM',",
+                                "      text: 'nausea and vomiting',",
+                                "      start: 44,",
+                                "      end: 66",
+                                "    },",
+                                "    {",
+                                "      label: 'DISEASE',",
+                                "      text: 'urinary tract infection',",
+                                "      start: 67,",
+                                "      end: 93",
+                                "    },",
+                                "    { branch: 'Medical', group: 'History' }",
+                                "  ],",
+                                "  prompt_tokens: 244,",
+                                "  completion_tokens: 75,",
+                                "  total_tokens: 319",
+                                "}",
+                                ""
+                            ]
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "language": "markdown",
+            "source": [
+                "### With inline fine tuning (One shot)\n* The `domain` property helps fucus the language model.\n* The `textInput` property is the text to be parsed.\n* The `labels` array is a list entities that the model should extract. \n* The `examples` array take an array of arrays. Each of which has two properties. The example input text and the labels data you would expect to be returned. You nay add muiltple examples, but remember there is a limit to how big the prompt can be, which is set by the model you are using."
+            ],
+            "outputs": []
+        },
+        {
+            "language": "javascript",
+            "source": [
+                "let text = \"Leptomeningeal metastases (LM) occur in patients with breast cancer (BC) and lung cancer (LC). The cerebrospinal fluid (CSF) tumour microenvironment (TME) of LM patients is not well defined at a single-cell level. We did an analysis based on single-cell RNA sequencing (scRNA-seq) data and four patient-derived CSF samples of idiopathic intracranial hypertension (IIH)\"\nlet labels = [\n  {'E': 'DISEASE', 'W': 'Leptomeningeal metastases'}, \n  {'E': 'DISEASE', 'W': 'breast cancer'}, \n  {'E': 'DISEASE', 'W': 'lung cancer'}, \n  {'E': 'BIOMARKER', 'W': 'cerebrospinal fluid'}, \n  {'E': 'DISEASE', 'W': 'tumour microenvironment'}, \n  {'E': 'TEST', 'W': 'single-cell RNA sequencing'}, \n  {'E': 'DISEASE', 'W': 'idiopathic intracranial hypertension'}\n]\nlet fineTune = [\n  [text, labels]\n]\n\nlet result = await nlpPrompter.fit('ner.njk', {\n    domain: 'medical',\n    labels: [\"SYMPTOM\", \"DISEASE\"],\n    examples: fineTune,\n    textInput: 'The patient is a 93-year-old female with a medical history of chronic right hip pain, osteoporosis, hypertension, depression, and chronic atrial fibrillation admitted for evaluation and management of severe nausea and vomiting and urinary tract infection'\n  });\nconsole.log(result);"
+            ],
+            "outputs": [
+                {
+                    "items": [
+                        {
+                            "mime": "application/vnd.code.notebook.stdout",
+                            "value": [
+                                "{",
+                                "  text: [",
+                                "    {",
+                                "      label: 'SYMPTOM',",
+                                "      text: 'nausea and vomiting',",
+                                "      start: 44,",
+                                "      end: 68",
+                                "    },",
+                                "    {",
+                                "      label: 'DISEASE',",
+                                "      text: 'urinary tract infection',",
+                                "      start: 71,",
+                                "      end: 97",
+                                "    },",
+                                "    { branch: 'Medical History', group: 'Chronic Conditions' }",
+                                "  ],",
+                                "  prompt_tokens: 374,",
+                                "  completion_tokens: 78,",
+                                "  total_tokens: 452",
+                                "}",
+                                ""
+                            ]
+                        }
+                    ]
+                }
+            ]
+        }
+    ]
+}

@@ -16,14 +16,14 @@ You are a highly intelligent and accurate Named-entity recognition(NER) system. 
 {%- else -%}
 You are a highly intelligent and accurate Named-entity recognition(NER) system. You take Passage as input and your task is to recognize and extract specific types of named entities in that given passage and classify into a set of entity types.
 {%- endif -%}
-{% endif -%}
-Your output format is only {{ output_format|default("[{'type': type of entity from predefined entity types, 'label': entity in the input text, 'start': start char index number of the entity, 'end': end char index number of the entity}},...,{{'branch' : Appropriate branch of the passage ,'group': Appropriate Group of the passage}]") }} form, no other form.
+{% endif -%} 
+Your output format is only {{ output_format|default("[{'label': type of entity from predefined entity types, 'text': entity in the input text, 'start': start char index number of the entity, 'end': end char index number of the entity}},...,{{'branch' : Appropriate branch of the passage ,'group': Appropriate Group of the passage}]") }} form, no other form.
 
 {% if examples is defined and examples|length > 0 -%}
 Examples:
 {% for sentence, label in examples %}
 Input: {{ sentence }}
-Output: [{{ label }}]
+Output: {{ label | dump(2) }}
 {% endfor %}
 {% endif -%}
 

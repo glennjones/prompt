@@ -6,10 +6,12 @@ import { jsonrepair } from 'jsonrepair'
 import Nunjucks from 'nunjucks';
 */
 const path = require("node:path");
-const { fileURLToPath } = require('node:url');
+//const { fileURLToPath } = require('node:url');
 const changeCase = require("change-case");
-const { jsonrepair } = require('jsonrepair')
 const Nunjucks = require('nunjucks');
+const htmlEntities = require('html-entities');
+const Parser = require("../models/parser/parser.js");
+
 
 
 function clone(obj) {
@@ -76,11 +78,8 @@ class Prompter {
 
         var template = this.environment.getTemplate(fullPath);
         var prompt = template.render(data).trim();
-
-        //let filePath = path.join(this.templatesPath, templateName);
-        //let prompt = nunjucks.render('foo.html', filePath);
-
-        return prompt;
+        // decode html entities from nunjucks
+        return htmlEntities.decode(prompt);
     }
 
 
@@ -109,8 +108,8 @@ class Prompter {
 
     parseJSON(json) {
         try {
-            const repaired = jsonrepair(json)
-            return JSON.parse(repaired);
+            const parser  = new Parser();
+            return parser.extractCompleteObjects(json);
         } catch (err) {
             console.error(err)
             return { err: 'error passing results, please check the console'};

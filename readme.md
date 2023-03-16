@@ -1,8 +1,8 @@
 # Prompt
 
-IN DEVELOPMENT - NOT STABLE
+### IN DEVELOPMENT - NOT STABLE
 
-This is a javascript version of Promptify 
+This is a javascript version of Promptify - https://github.com/promptslab/Promptify
 
 ```
 import {OpenAI, Prompter} from Promptify

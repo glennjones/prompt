@@ -1,13 +1,9 @@
-/*
-import ast
-import itertools
-import json
-import re
-from operator import itemgetter
-from typing import Any, Dict, List, Optional, Union
-*/
+const { jsonrepair } = require('jsonrepair')
 
-export class Parser {
+// This file was converted from Python to JavaScript using GTP
+// Add the jsonrepair library to fix any issues inside the complete objects 
+
+class Parser {
     constructor() {
     }
 
@@ -146,10 +142,10 @@ export class Parser {
         // followed by any number of non-brace and non-bracket characters, and ending with a closing brace
         // or bracket that is not preceded by an odd number of backslash escape characters.
 
-        const objectStrings = [];
-        const opening = { '{': 0, '[': 0 };
-        const closing = { '}': '{', ']': '[' };
-        const stack = [];
+        let objectStrings = [];
+        let opening = { '{': 0, '[': 0 };
+        let closing = { '}': '{', ']': '[' };
+        let stack = [];
         let start = 0;
 
         for (const match of string.matchAll(objectRegex)) {
@@ -159,7 +155,7 @@ export class Parser {
             stack.push(match[0]);
 
             if (match[0][match[0].length - 1] in closing) {
-                const openingBracket = closing[match[0][match[0].length - 1]];
+                let openingBracket = closing[match[0][match[0].length - 1]];
                 opening[openingBracket] += 1;
                 if (opening[openingBracket] === Object.values(opening).filter(value => value !== 0).length) {
                     objectStrings.push(string.substring(start, match.index + match[0].length));
@@ -174,10 +170,11 @@ export class Parser {
             console.log(`Error: Incomplete object at end of string: ${stack[stack.length - 1]}`);
         }
 
-        const objects = [];
+        let objects = [];
         for (const objectString of objectStrings) {
             try {
-                const obj = JSON.parse(objectString);
+                const repaired = jsonrepair(objectString);
+                const obj = JSON.parse(repaired);
                 // Use JSON.parse() to safely evaluate the string as a JavaScript object.
                 objects.push(obj);
             } catch (e) {
@@ -191,3 +188,5 @@ export class Parser {
 
 
 }
+
+module.exports = Parser;

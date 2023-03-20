@@ -9,16 +9,28 @@ const Model = require('./model.js');
 const { getEncoder } = require('./utils/bpe-encoder.js');
 const { Configuration, OpenAIApi } = require('openai');
 const axios = require('axios');
-const assert = require('node:assert/strict');
+const axiosRetry = require('axios-retry');
+
+
+axiosRetry(axios, {
+    retries: 3, 
+    //retryDelay: axiosRetry.exponentialDelay,
+    retryDelay: (retryCount) => {
+        return 10000; // 10 seconds
+    },
+    onRetry: (retryCount) => {
+        console.log(`retry attempt: ${retryCount}`);
+    },
+});
 
 
 // regexes for model names and their token counts
 const GPTModelTOKENS = [
     { regEx: /gpt-3.5-turbo((?=-).*)?/, maxTokens: 4096},
-    { regEx: /.*-davinci-003/, maxTokens: 4000},
-    { regEx: /.*-curie-001/, maxTokens:  2048},
-    { regEx: /.*-babbage-001/, maxTokens:  2048},
-    { regEx: /.*-ada-001/, maxTokens: 2048},
+    { regEx: /\bdavinci\b/, maxTokens: 4000},
+    { regEx: /\bcurie\b/, maxTokens:  2048},
+    { regEx: /\bbabbage\b/, maxTokens:  2048},
+    { regEx: /\bada\b/, maxTokens: 2048},
 ]
 
 function clone(obj) {
@@ -48,8 +60,34 @@ class OpenAI extends Model {
     }
 
 
-    listModels() {
+    async listModels() {
+
+        const apiEndpoint = 'https://api.openai.com/v1/models';
+        const apiKey = this.apiKey;
+        const config = {
+            headers: {
+                'Content-Type': 'application/json',
+                Authorization: 'Bearer ' + apiKey,
+            },
+        };
+    
+        try {
+            let response = await axios.get(apiEndpoint, config);
+            if(response.data.data){
+                return response.data.data
+            } 
+            console.log('error message: ', 'no data from openai models api endpoint');
+            return null;
+        } catch (error) {
+            if (axios.isAxiosError(error)) {
+                console.log('error message: ', error.message);
+            } else {
+                console.log('unexpected error: ', error);
+            }
+            return null;
+        }
         
+        /*
         // get all models for OpenAI API
         const listOfModels = this.openai.Model.list()["data"].map(model => model.id);
         // compare with supported models and return modellist
@@ -61,23 +99,9 @@ class OpenAI extends Model {
         }
       
         return models;
+        */
     }
 
-    async runx(prompts, options) {
-        for (const prompt of prompts) {
-            // Automatically calculate max output tokens if not specified
-            if (!config.maxTokens) {
-                const prompTokens = this.encoder.encode(prompt).length;
-                let foundModel = GPTModelTOKENS.filter( item => {
-                    let x = item.regEx.test(this.model.toLowerCase())
-                    return x
-                })
-                modelmaxTokens = foundModel[0].maxTokens;
-                config.maxTokens = modelmaxTokens - prompTokens;
-            }
-        }
-        return undefined;
-    }
 
     async run(prompt, options) {
 
@@ -135,7 +159,9 @@ class OpenAI extends Model {
             completionsOpions.model = this.model;
             completionsOpions.prompt = prompt;
             response = await this.getCompletions(completionsOpions);
-            data["text"] = response["choices"][0]["text"];
+            if(response){
+                data["text"] = response["choices"][0]["text"];
+            }
         }
         Object.assign(data, response["usage"]);
         result.push(data);
@@ -167,19 +193,22 @@ class OpenAI extends Model {
                 'Content-Type': 'application/json',
                 Authorization: 'Bearer ' + apiKey,
             },
+
         };
     
         try {
+            console.log('fired api request: ')
             let response = await axios.post(apiEndpoint, requestData, config);
             return response.data
         } catch (error) {
             if (axios.isAxiosError(error)) {
                 console.log('error message: ', error.message);
-                return error.message;
+                //return error.message;
             } else {
                 console.log('unexpected error: ', error);
-                return 'An unexpected API post request error occurred';
+                //return 'An unexpected API post request error occurred';
             }
+            return null;
         }
         
     }

@@ -6,11 +6,12 @@ import { jsonrepair } from 'jsonrepair'
 import Nunjucks from 'nunjucks';
 */
 const path = require("node:path");
-//const { fileURLToPath } = require('node:url');
+const crypto = require('node:crypto');
 const changeCase = require("change-case");
 const Nunjucks = require('nunjucks');
 const htmlEntities = require('html-entities');
 const Parser = require("../models/parser/parser.js");
+
 
 
 
@@ -24,18 +25,26 @@ const dirPath = path.join(__dirname, 'templates');
 class Prompter {
 
     // defaults
-    allowedMissingVariables = ["examples", "description", "output_format"];
+    
+    // allowedMissingVariables = ["examples", "description", "output_format"]
+    defaults = {
+        templatesPath: dirPath,
+        templateCaching: false,
+        promptHash: false,
+        cache: null,
+    }
 
-
-    // options = templatesPath = templatesDir, allowedMissingVariables = ["examples", "description", "output_format"]
     constructor(model, options) {
         this.model = model;
-        this.templatesPath = dirPath;
+        this.config = Object.assign({}, this.defaults, options);
 
-        if(options && options.templatesPath) {
-            this.templatesPath = options.templatesPath;
+        if(options && options.cache) {
+            this.config.promptHash = true;
+            this.cache = options.cache;
         }
-        const resolver = new Nunjucks.FileSystemLoader(this.templatesPath, { noCache: true, watch: false });
+
+        let noCache = !this.config.templateCaching;
+        const resolver = new Nunjucks.FileSystemLoader(this.config.templatesPath, { noCache, watch: false });
         this.environment = new Nunjucks.Environment(resolver)
     }
 
@@ -68,7 +77,7 @@ class Prompter {
 
         // load and render template
         //const fullPath = fileURLToPath(new URL('./templates/' + templateName, import.meta.url));
-        const fullPath = path.join(this.templatesPath, templateName);
+        const fullPath = path.join(this.config.templatesPath, templateName);
 
         let data = {}
         let keys = Object.keys(options);
@@ -80,6 +89,12 @@ class Prompter {
         var prompt = template.render(data).trim();
         // decode html entities from nunjucks
         return htmlEntities.decode(prompt);
+    }
+
+    hashObject(obj) {
+        const hash = crypto.createHash('sha256');
+        hash.update(JSON.stringify(obj));
+        return hash.digest('hex');
     }
 
 
@@ -96,14 +111,40 @@ class Prompter {
             }
         }
         */
-        let prompt = this.generatePrompt(templateName, options);
-        let output = await this.model.run(prompt, options);
-        let result = output[0];
-        if(result.text) {
-            result.text = this.parseJSON(result.text)
+        let prompt = this.generatePrompt(templateName, options);  
+        let promptHash = this.hashObject(prompt);
+        if(this.cache) {
+            let cachedResult = await this.cache.get(promptHash);
+            if(cachedResult) {
+                return cachedResult.result;
+            }
         }
-
-        return result
+      
+        let output = await this.model.run(prompt, options);
+        if(output){
+            let out = output[0];
+            if(out.text) {
+                out.text += options.stop || '';
+                out.text = this.parseJSON(out.text);
+            }
+            out = this.formatOutput(out);
+            if(this.config.promptHash === true){
+                out.hash = promptHash;
+            }
+            if(this.cache) {
+                await this.cache.add(promptHash, {
+                    hash: promptHash,
+                    templateName,
+                    text: options.textInput,
+                    prompt,
+                    result: out
+                });
+            }
+            return out;
+        }else{
+            return { err: 'error getting data, please check the console'};
+        }
+        
     }
 
     parseJSON(json) {
@@ -114,6 +155,17 @@ class Prompter {
             console.error(err)
             return { err: 'error passing results, please check the console'};
         }
+    }
+
+    formatOutput(obj) {
+        let out = {}
+        let keys = Object.keys(obj);
+        keys.forEach(key => {
+            out[changeCase.camelCase(key)] = obj[key];
+        });
+        out.data = clone(out.text)
+        delete out.text;
+        return out;
     }
 
 

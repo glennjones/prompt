@@ -16,15 +16,18 @@
   "license": "MIT",
   "dependencies": {
     "axios": "^1.3.4",
+    "axios-retry": "^3.4.0",
     "change-case": "^4.1.2",
     "dotenv": "^16.0.3",
     "esm-hook": "^0.1.4",
     "gpt-3-encoder": "^1.1.4",
     "html-entities": "^2.3.3",
     "jsonrepair": "^3.0.2",
+    "n-readlines": "^1.0.1",
     "nunjucks": "^3.2.3",
     "openai": "^3.2.1",
-    "range-overlap": "^0.0.4"
+    "range-overlap": "^0.0.4",
+    "retry-axios": "^3.0.0"
   },
   "devDependencies": {
     "nodemon": "^2.0.20"

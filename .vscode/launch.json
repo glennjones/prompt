@@ -18,7 +18,7 @@
             "skipFiles": [
                 "<node_internals>/**"
             ],
-            "program": "${workspaceFolder}/example/ner01.js"
+            "program": "${workspaceFolder}/example/nerBatch01.js"
         }
     ]
 }

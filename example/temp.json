@@ -1,0 +1,24 @@
+{
+    "hash": "7c65035d5f94ff74af16e75c4f687bd7231220f1177c6336df3c20319d381036",
+    "templateName": "ner.njk",
+    "text": "Experience Director",
+    "prompt": "You are a highly intelligent and accurate ux design domain Named-entity recognition(NER) system. You take Passage as input and your task is to recognize and extract specific types of ux design domain named entities in that given passage and classify into a set of following predefined entity types:\nJOBTITLE,EMPLOYMENT_TYPE,DURATION,LOCATION,REMOTE_OPTIONYour output format is only [{'label': type of entity from predefined entity types, 'text': entity in the input text, 'start': start char index number of the entity, 'end': end char index number of the entity}},...,{{'branch' : Appropriate branch of the passage ,'group': Appropriate Group of the passage}] form, no other form. \nDo not return empty entity values. \n\nInput: Experience Director\nOutput:",
+    "result": {
+        "promptTokens": 185,
+        "completionTokens": 44,
+        "totalTokens": 229,
+        "data": [
+            {
+                "label": "JOBTITLE",
+                "text": "Experience Director",
+                "start": 0,
+                "end": 17
+            },
+            {
+                "branch": "Experience",
+                "group": "Director"
+            }
+        ],
+        "hash": "7c65035d5f94ff74af16e75c4f687bd7231220f1177c6336df3c20319d381036"
+    }
+}

@@ -46,3 +46,5 @@ typings/
 
 # temp file with sites connection data
 src/config/sites.ts
+
+data

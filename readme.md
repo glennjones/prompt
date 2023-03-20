@@ -2,6 +2,18 @@
 
 ### IN DEVELOPMENT - NOT STABLE
 
+TODO
+* Get list of models from rest API
+* Make sure the selection of fine tuned models works
+* Add rate limiting information - request a minute, tokens a minute
+* Add requesting limiting with a que
+* Honour any back-off responses from server - if there is one
+* Request retry after fixed period. 
+* ~~Add Prompt hash ~~
+* ~~Add Cache interface~~
+* ~~Add simple json file cache~~
+
+
 This is a javascript version of Promptify - https://github.com/promptslab/Promptify
 
 ```

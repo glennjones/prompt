@@ -17,6 +17,17 @@ TODO
 This is a javascript version of Promptify - https://github.com/promptslab/Promptify
 
 ```
+npm i https://github.com/glennjones/Prompt
+```
+
+
+```
+const Prompt = require('prompt');
+const {Prompter, OpenAI} = Prompt;
+```
+
+
+```
 import {OpenAI, Prompter} from prompt
 
 const sentence = 'The patient is a 93-year-old female with a medical history of chronic right hip pain, osteoporosis,	hypertension, depression, and chronic atrial fibrillation admitted for evaluation and management of severe nausea and vomiting and urinary tract infection'

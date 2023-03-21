@@ -3,13 +3,13 @@
 ### IN DEVELOPMENT - NOT STABLE
 
 TODO
-* Get list of models from rest API
-* Make sure the selection of fine tuned models works
+* ~~Get list of models from rest API~~
+* ~~Selection of fine tuned models works~~
 * Add rate limiting information - request a minute, tokens a minute
 * Add requesting limiting with a que
 * Honour any back-off responses from server - if there is one
-* Request retry after fixed period. 
-* ~~Add Prompt hash ~~
+* ~~Request retry after fixed period~~
+* ~~Add Prompt hash~~
 * ~~Add Cache interface~~
 * ~~Add simple json file cache~~
 
@@ -31,13 +31,13 @@ result = nlpPrompter.fit('ner.njk', {
                                              
 ### Output
 
-[{'E': '93-year-old', 'T': 'Age'},
- {'E': 'chronic right hip pain', 'T': 'Medical Condition'},
- {'E': 'osteoporosis', 'T': 'Medical Condition'},
- {'E': 'hypertension', 'T': 'Medical Condition'},
- {'E': 'depression', 'T': 'Medical Condition'},
- {'E': 'chronic atrial fibrillation', 'T': 'Medical Condition'},
- {'E': 'severe nausea and vomiting', 'T': 'Symptom'},
- {'E': 'urinary tract infection', 'T': 'Medical Condition'},
- {'Branch': 'Internal Medicine', 'Group': 'Geriatrics'}]
+[{'text': '93-year-old', 'label': 'Age'},
+ {'text': 'chronic right hip pain', 'label': 'Medical Condition'},
+ {'text': 'osteoporosis', 'label': 'Medical Condition'},
+ {'text': 'hypertension', 'label': 'Medical Condition'},
+ {'text': 'depression', 'label': 'Medical Condition'},
+ {'text': 'chronic atrial fibrillation', 'label': 'Medical Condition'},
+ {'text': 'severe nausea and vomiting', 'label': 'Symptom'},
+ {'text': 'urinary tract infection', 'label': 'Medical Condition'},
+ {'branch': 'Internal Medicine', 'group': 'Geriatrics'}]
  ```

@@ -95,10 +95,11 @@
                         {
                             "mime": "application/vnd.code.notebook.stdout",
                             "value": [
+                                "fired api request: ",
                                 "{",
-                                "  promptTokens: 193,",
-                                "  completionTokens: 182,",
-                                "  totalTokens: 375,",
+                                "  promptTokens: 203,",
+                                "  completionTokens: 187,",
+                                "  totalTokens: 390,",
                                 "  data: [",
                                 "    {",
                                 "      label: 'JOBTITLE',",
@@ -111,7 +112,7 @@
                                 "    { label: 'DURATION', text: '6 month', start: 29, end: 37 },",
                                 "    { label: 'LOCATION', text: 'Edinburgh', start: 38, end: 47 },",
                                 "    { label: 'REMOTE_OPTION', text: 'Hybrid', start: 48, end: 55 },",
-                                "    { branch: 'UX Design', group: 'Research' }",
+                                "    { branch: 'UX Design Domain', group: 'Named-entity recognition' }",
                                 "  ]",
                                 "}",
                                 ""
@@ -131,7 +132,7 @@
         {
             "language": "javascript",
             "source": [
-                "let text = \"Senior UX Researcher, part-time 6 month contract, Edinburgh - Hybrid\"\nlet labels = [\n  { label: 'JOBTITLE', text: 'Senior', start: 0, end: 6 },\n  { label: 'SENIORITY', text: 'Senior UX Researcher', start: 0, end: 20 },\n  { label: 'EMPLOYMENT_TYPE', text: 'part-time', start: 22, end: 31 },\n  { label: 'EMPLOYMENT_TYPE', text: 'contract', start: 40, end: 47 },\n  { label: 'DURATION', text: '6 month', start: 32, end: 39 },\n  { label: 'LOCATION', text: 'Edinburgh', start: 50, end: 59 },\n  { label: 'REMOTE_OPTION', text: 'Hybrid', start: 62, end: 70 },\n  { branch: 'UX Design', group: 'Research' }\n]\nlet fineTune = [\n  [text, labels]\n]\n\nlet result = await nlpPrompter.fit('ner.njk', {\n    domain: 'ux design',\n    labels: [\"JOBTITLE\", \"SENORITY\", \"EMPLOYMENT_TYPE\", \"DURATION\", \"LOCATION\", \"REMOTE_OPTION\"],\n    textInput: 'UX Copy Writer Team Leader, Edinburgh or Hybrid',\n    examples: fineTune\n    });\nconsole.log(result);"
+                "let text = \"Senior UX Researcher, part-time 6 month contract, Edinburgh - Hybrid\"\nlet labels = [\n  { label: 'JOBTITLE', text: 'Senior UX Researcher', start: 0, end: 20 },\n  { label: 'SENIORITY', text: 'Senior', start: 0, end: 6 },\n  { label: 'EMPLOYMENT_TYPE', text: 'part-time', start: 22, end: 31 },\n  { label: 'EMPLOYMENT_TYPE', text: 'contract', start: 40, end: 47 },\n  { label: 'DURATION', text: '6 month', start: 32, end: 39 },\n  { label: 'LOCATION', text: 'Edinburgh', start: 50, end: 59 },\n  { label: 'REMOTE_OPTION', text: 'Hybrid', start: 62, end: 70 },\n  { branch: 'UX Design', group: 'Research' }\n]\nlet fineTune = [\n  [text, labels]\n]\n\nlet result = await nlpPrompter.fit('ner.njk', {\n    domain: 'ux design',\n    labels: [\"JOBTITLE\", \"SENORITY\", \"EMPLOYMENT_TYPE\", \"DURATION\", \"LOCATION\", \"REMOTE_OPTION\"],\n    textInput: 'UX Copy Writer Team Leader, Edinburgh or Hybrid',\n    examples: fineTune\n    });\nconsole.log(result);"
             ],
             "outputs": [
                 {

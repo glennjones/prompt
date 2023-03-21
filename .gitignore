@@ -48,3 +48,7 @@ typings/
 src/config/sites.ts
 
 data
+src/cache
+
+example/nerBatch01.js
+example/nerBatch02.js

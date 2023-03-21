@@ -101,7 +101,7 @@ const jobTitles = titles.map((item) => {
 
 getAllData(jobTitles).then((results) => {
     console.log(JSON.stringify(results, null, 2));
-    saveData('../data/ux-job-titles-01-processed.jsonl', data)
+    saveData('../data/ux-job-titles-01-processed.jsonl', results)
 });
   
  

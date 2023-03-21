@@ -48,7 +48,7 @@ typings/
 src/config/sites.ts
 
 data
-src/cache
+src/cache/*.jsonl
 
 example/nerBatch01.js
 example/nerBatch02.js

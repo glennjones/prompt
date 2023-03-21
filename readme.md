@@ -17,17 +17,18 @@ TODO
 This is a javascript version of Promptify - https://github.com/promptslab/Promptify
 
 ```
-import {OpenAI, Prompter} from Promptify
+import {OpenAI, Prompter} from prompt
 
 const sentence = 'The patient is a 93-year-old female with a medical history of chronic right hip pain, osteoporosis,	hypertension, depression, and chronic atrial fibrillation admitted for evaluation and management of severe nausea and vomiting and urinary tract infection'
 
 model = OpenAI(api_key)
 nlpPrompter = Prompter(model)
 
-result = nlpPrompter.fit('ner.njk', {
+let result = await nlpPrompter.fit('ner.njk', {
     domain: 'medical',
     textInput: sentence,
 })
+
                                              
 ### Output
 

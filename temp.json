@@ -1,0 +1,14 @@
+{
+  "text": [
+    { "label": "Patient", "text": "The patient" },
+    { "label": "Age", "text": "93-year-old" },
+    { "label": "Disease", "text": "osteoporosis" },
+    { "label": "Disease", "text": "hypertension" },
+    { "label": "Disease", "text": "depression" },
+    { "label": "Disease", "text": "chronic atrial fibrillation" },
+    { "label": "Symptom", "text": "severe nausea and vomiting" }
+  ],
+  "prompt_tokens": 236,
+  "completion_tokens": 238,
+  "total_tokens": 474
+}

@@ -39,7 +39,17 @@
                         {
                             "mime": "application/vnd.code.notebook.stdout",
                             "value": [
+                                "0.7512613340616227 seconds",
                                 "[",
+                                "  {",
+                                "    id: 'davinci:ft-personal-2023-03-21-22-17-08',",
+                                "    object: 'model',",
+                                "    created: 1679437028,",
+                                "    owned_by: 'user-xp8dtswosvrthbxqmnjhw9zh',",
+                                "    permission: [ [Object] ],",
+                                "    root: 'davinci:2020-05-03',",
+                                "    parent: 'davinci:2020-05-03'",
+                                "  },",
                                 "  {",
                                 "    id: 'ada:ft-personal-2023-03-19-23-12-25',",
                                 "    object: 'model',",
@@ -104,7 +114,7 @@
         {
             "language": "javascript",
             "source": [
-                "jobtitle = 'UX Copy Writer Lead, Edinburgh or Hybrid'\nlet result = await nlpPrompter.fit('ux-jobtitles.njk', {\n    textInput: jobtitle,\n    stop: '\"}]',\n    maxTokens: 600,\n  });\n\nner = addStartEnd(jobtitle, result.data);\nconsole.log(ner);"
+                "jobtitle = 'Senior UX Designer'\nlet result = await nlpPrompter.fit('ux-jobtitles.njk', {\n    textInput: jobtitle,\n    stop: '\"}]',\n    maxTokens: 600,\n  });\n\nner = addStartEnd(jobtitle, result.data);\nconsole.log(ner);"
             ],
             "outputs": [
                 {
@@ -112,11 +122,11 @@
                         {
                             "mime": "application/vnd.code.notebook.stdout",
                             "value": [
-                                "fired api request: ",
+                                "1.8414372910261154 seconds",
                                 "[",
-                                "  { text: 'UX Copy Writer', start: 0, end: 14, label: 'COREJOBTITLE' },",
-                                "  { text: 'UX Copy Writer Lead', start: 0, end: 19, label: 'JOBTITLE' },",
-                                "  { text: 'Lead', start: 15, end: 19, label: 'SENIORITY' }",
+                                "  { text: 'Senior', start: 0, end: 6, label: 'SENIORITY' },",
+                                "  { text: 'Senior UX Designer', start: 0, end: 18, label: 'JOBTITLE' },",
+                                "  { text: 'UX Designer', start: 7, end: 18, label: 'COREJOBTITLE' }",
                                 "]",
                                 ""
                             ]

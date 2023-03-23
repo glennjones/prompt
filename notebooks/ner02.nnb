@@ -53,23 +53,25 @@
                         {
                             "mime": "application/vnd.code.notebook.stdout",
                             "value": [
+                                "3.7098181660175324 seconds",
                                 "{",
                                 "  promptTokens: 174,",
-                                "  completionTokens: 225,",
-                                "  totalTokens: 399,",
-                                "  data: []",
+                                "  completionTokens: 145,",
+                                "  totalTokens: 319,",
+                                "  data: [",
+                                "    {",
+                                "      label: 'Job Title',",
+                                "      text: 'Senior UX Researcher',",
+                                "      start: 0,",
+                                "      end: 18",
+                                "    },",
+                                "    { label: 'Contract Type', text: 'part-time', start: 19, end: 28 },",
+                                "    { label: 'Contract Duration', text: '6 month', start: 29, end: 37 },",
+                                "    { label: 'Location', text: 'Edinburgh', start: 38, end: 47 },",
+                                "    { label: 'Work Type', text: 'Hybrid', start: 48, end: 55 },",
+                                "    { branch: 'UX Design', group: 'Research' }",
+                                "  ]",
                                 "}",
-                                ""
-                            ]
-                        }
-                    ]
-                },
-                {
-                    "items": [
-                        {
-                            "mime": "application/vnd.code.notebook.stderr",
-                            "value": [
-                                "Debugger ending on ws://127.0.0.1:55715/4b6935c0-7ec1-46f8-9c84-3c40e01c13b3",
                                 ""
                             ]
                         }
@@ -87,7 +89,7 @@
         {
             "language": "javascript",
             "source": [
-                "let result = await nlpPrompter.fit('ner.njk', {\n    domain: 'ux design',\n    labels: [\"JOBTITLE\", \"SENORITY\", \"EMPLOYMENT_TYPE\", \"DURATION\", \"LOCATION\", \"REMOTE_OPTION\"],\n    textInput: 'Senior UX Researcher, part-time 6 month contract, Edinburgh - Hybrid'\n  });\nconsole.log(result);"
+                "let result = await nlpPrompter.fit('ner.njk', {\n    domain: 'ux design',\n    labels: [\"JOBTITLE\", \"SENORITY\", \"EMPLOYMENT_TYPE\", \"DURATION\", \"LOCATION\", \"REMOTE_OPTION\"],\n    textInput: 'Senior Product Designer (UX)'\n  });\nconsole.log(result);"
             ],
             "outputs": [
                 {
@@ -95,24 +97,21 @@
                         {
                             "mime": "application/vnd.code.notebook.stdout",
                             "value": [
-                                "fired api request: ",
+                                "3.963730875015259 seconds",
                                 "{",
-                                "  promptTokens: 203,",
-                                "  completionTokens: 187,",
-                                "  totalTokens: 390,",
+                                "  promptTokens: 194,",
+                                "  completionTokens: 100,",
+                                "  totalTokens: 294,",
                                 "  data: [",
                                 "    {",
                                 "      label: 'JOBTITLE',",
-                                "      text: 'Senior UX Researcher',",
+                                "      text: 'Senior Product Designer',",
                                 "      start: 0,",
-                                "      end: 18",
+                                "      end: 21",
                                 "    },",
                                 "    { label: 'SENIORITY', text: 'Senior', start: 0, end: 6 },",
-                                "    { label: 'EMPLOYMENT_TYPE', text: 'part-time', start: 19, end: 28 },",
-                                "    { label: 'DURATION', text: '6 month', start: 29, end: 37 },",
-                                "    { label: 'LOCATION', text: 'Edinburgh', start: 38, end: 47 },",
-                                "    { label: 'REMOTE_OPTION', text: 'Hybrid', start: 48, end: 55 },",
-                                "    { branch: 'UX Design Domain', group: 'Named-entity recognition' }",
+                                "    { label: 'EMPLOYMENT_TYPE', text: 'UX', start: 22, end: 24 },",
+                                "    { branch: 'Product Design', group: 'UX' }",
                                 "  ]",
                                 "}",
                                 ""
@@ -140,7 +139,7 @@
                         {
                             "mime": "application/vnd.code.notebook.stdout",
                             "value": [
-                                "fired api request: ",
+                                "3.6083810420036317 seconds",
                                 "{",
                                 "  promptTokens: 526,",
                                 "  completionTokens: 147,",

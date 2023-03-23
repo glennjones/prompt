@@ -45,7 +45,7 @@
         {
             "language": "javascript",
             "source": [
-                "let result = await nlpPrompter.fit('ner.njk', {\n    domain: 'medical',\n    textInput: 'The patient is a 93-year-old female with a medical history of chronic right hip pain, osteoporosis, hypertension, depression, and chronic atrial fibrillation admitted for evaluation and management of severe nausea and vomiting and urinary tract infection'\n  });\nconsole.log(result);"
+                "let result = await nlpPrompter.fit('ner.njk', {\n    domain: 'medical',\n    textInput: `The patient is a 93-year-old female \n    with a medical history of chronic right hip pain, \n    osteoporosis, hypertension, depression, and \n    chronic atrial fibrillation admitted for evaluation \n    and management of severe nausea and vomiting and \n    urinary tract infection`\n  });\nconsole.log(result);"
             ],
             "outputs": [
                 {

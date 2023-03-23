@@ -10,6 +10,7 @@ const { getEncoder } = require('./utils/bpe-encoder.js');
 const { Configuration, OpenAIApi } = require('openai');
 const axios = require('axios');
 const axiosRetry = require('axios-retry');
+const { performance } = require('perf_hooks');
 
 
 axiosRetry(axios, {
@@ -72,8 +73,10 @@ class OpenAI extends Model {
         };
     
         try {
+            let time = performance.now();
             let response = await axios.get(apiEndpoint, config);
             if(response.data.data){
+                console.log(`${(performance.now() - time) / 1000} seconds`);
                 return response.data.data
             } 
             console.log('error message: ', 'no data from openai models api endpoint');
@@ -197,8 +200,9 @@ class OpenAI extends Model {
         };
     
         try {
-            console.log('fired api request: ')
+            let time = performance.now();
             let response = await axios.post(apiEndpoint, requestData, config);
+            console.log(`${(performance.now() - time) / 1000} seconds`);
             return response.data
         } catch (error) {
             if (axios.isAxiosError(error)) {

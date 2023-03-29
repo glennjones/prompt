@@ -22,7 +22,7 @@ async function test() {
   ]
   
   let result = await prompt.fit('ner', {
-      domain: 'ux recruitment',
+      domain: 'ux design job titles',
       labels: ["JOBTITLE", "EMPLOYMENT_TYPE", "DURATION", "LOCATION", "REMOTE_OPTION"],
       textInput: 'UX/UI Copy Writer, Edinburgh or Hybrid',
       examples: fineTune

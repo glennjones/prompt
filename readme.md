@@ -1,6 +1,7 @@
 # Prompt
 
-### IN DEVELOPMENT - NOT STABLE
+### IN DEVELOPMENT - INTERFACE IS NOT YET FIXED
+At the moment this code is more of a sketched idea than a library, but it is usable if your interested in tring it out.
 
 TODO
 * ~~Get list of models from rest API~~
@@ -14,10 +15,10 @@ TODO
 * ~~Add simple json file cache~~
 
 
-This is a javascript version of Promptify - https://github.com/promptslab/Promptify
+Based on the ideas/code of Promptify - https://github.com/promptslab/promptify
 
 ```
-npm i https://github.com/glennjones/Prompt
+npm i https://github.com/glennjones/prompt
 ```
 
 

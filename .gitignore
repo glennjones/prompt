@@ -52,3 +52,5 @@ src/cache/*.jsonl
 
 example/nerBatch01.js
 example/nerBatch02.js
+
+notebooks/jobtitles.nnb

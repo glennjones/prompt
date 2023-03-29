@@ -9,7 +9,7 @@ const { OpenAI, Prompter, FileCache } = require('../index.js');
 async function test() {
   let model = new OpenAI(apiKey);
   let fileCache = new FileCache('./cache.jsonl');
-  let nlpPrompter = new Prompter(model, {cache: fileCache});
+  let prompt = new Prompter(model, {cache: fileCache});
 
   let labels = [
     'JOBTITLE',
@@ -19,14 +19,13 @@ async function test() {
     'REMOTE_OPTION',
   ]
 
-
-  let result1 = await nlpPrompter.fit('ner.njk', {
+  let result1 = await prompt.fit('ner.njk', {
     domain: 'ux design',
     labels: labels,
     textInput: 'UX/UI Copy Writer, Edinburgh or Hybrid',
   });
 
-  let result2 = await nlpPrompter.fit('ner.njk', {
+  let result2 = await prompt.fit('ner.njk', {
     domain: 'ux design',
     labels: labels,
     textInput: 'UX/UI Research, Part-time',

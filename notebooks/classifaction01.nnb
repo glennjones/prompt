@@ -1,0 +1,54 @@
+{
+    "cells": [
+        {
+            "language": "javascript",
+            "source": [
+                "const Prompt = require('../index.js')\nconst {Prompter, OpenAI} = Prompt;\n\nconst DotEnv = require('dotenv');\nDotEnv.config({path: '../.env'});\nconst apiKey = process.env.OPENAI_API_KEY;"
+            ],
+            "outputs": []
+        },
+        {
+            "language": "javascript",
+            "source": [
+                "let model = new OpenAI(apiKey);\nlet nlpPrompter = new Prompter(model);"
+            ],
+            "outputs": []
+        },
+        {
+            "language": "javascript",
+            "source": [
+                "let classes = [\n    'DESIGN',\n    'RESEARCH',\n    'PRODUCT',\n    'OPS',\n    'MANAGEMENT',\n    'WRITING',\n    'DEVELOPMENT',\n    'GENERAL',\n    'STRATEGY',\n    'EDUCATION'\n]\n\nlet result = await nlpPrompter.fit('multiclass_classification', {\n    domain: 'ux design job titles',\n    nOutputLabels: 5,\n    textInput: `UX Design Lecturer`,\n    labels: classes\n  });\nconsole.log(result);"
+            ],
+            "outputs": [
+                {
+                    "items": [
+                        {
+                            "mime": "application/vnd.code.notebook.stdout",
+                            "value": [
+                                "1.240708042025566 seconds",
+                                "{",
+                                "  promptTokens: 103,",
+                                "  completionTokens: 12,",
+                                "  totalTokens: 115,",
+                                "  data: [ { C: 'EDUCATION' } ]",
+                                "}",
+                                ""
+                            ]
+                        }
+                    ]
+                },
+                {
+                    "items": [
+                        {
+                            "mime": "application/vnd.code.notebook.stderr",
+                            "value": [
+                                "Debugger ending on ws://127.0.0.1:54584/1169644d-c13d-45ed-9f92-4908adb4bf1c",
+                                ""
+                            ]
+                        }
+                    ]
+                }
+            ]
+        }
+    ]
+}

@@ -31,7 +31,7 @@
         {
             "language": "javascript",
             "source": [
-                "let model = new OpenAI(apiKey);\nlet nlpPrompter = new Prompter(model);"
+                "let model = new OpenAI(apiKey);\nlet prompt = new Prompter(model);"
             ],
             "outputs": []
         },
@@ -45,7 +45,7 @@
         {
             "language": "javascript",
             "source": [
-                "let result = await nlpPrompter.fit('ner.njk', {\n    domain: 'medical',\n    textInput: `The patient is a 93-year-old female \n    with a medical history of chronic right hip pain, \n    osteoporosis, hypertension, depression, and \n    chronic atrial fibrillation admitted for evaluation \n    and management of severe nausea and vomiting and \n    urinary tract infection`\n  });\nconsole.log(result);"
+                "let result = await prompt.fit('ner', {\n    domain: 'medical',\n    textInput: `The patient is a 93-year-old female \n    with a medical history of chronic right hip pain, \n    osteoporosis, hypertension, depression, and \n    chronic atrial fibrillation admitted for evaluation \n    and management of severe nausea and vomiting and \n    urinary tract infection`\n  });\nconsole.log(result);"
             ],
             "outputs": [
                 {
@@ -53,36 +53,22 @@
                         {
                             "mime": "application/vnd.code.notebook.stdout",
                             "value": [
+                                "5.97585708296299 seconds",
                                 "{",
-                                "  text: [",
-                                "    { label: 'Patient', text: 'The patient', start: 0, end: 10 },",
-                                "    { label: 'Age', text: '93-year-old', start: 14, end: 25 },",
-                                "    { label: 'Disease', text: 'osteoporosis', start: 44, end: 56 },",
-                                "    { label: 'Disease', text: 'hypertension', start: 57, end: 68 },",
-                                "    { label: 'Disease', text: 'depression', start: 69, end: 78 },",
-                                "    {",
-                                "      label: 'Disease',",
-                                "      text: 'chronic atrial fibrillation',",
-                                "      start: 79,",
-                                "      end: 107",
-                                "    },",
-                                "    {",
-                                "      label: 'Symptom',",
-                                "      text: 'severe nausea and vomiting',",
-                                "      start: 108,",
-                                "      end: 136",
-                                "    },",
-                                "    {",
-                                "      label: 'Disease',",
-                                "      text: 'urinary tract infection',",
-                                "      start: 137,",
-                                "      end: 161",
-                                "    },",
+                                "  promptTokens: 198,",
+                                "  completionTokens: 164,",
+                                "  totalTokens: 362,",
+                                "  data: [",
+                                "    { label: 'Age', text: '93-year-old' },",
+                                "    { label: 'Medical Condition', text: 'chronic right hip pain' },",
+                                "    { label: 'Medical Condition', text: 'osteoporosis' },",
+                                "    { label: 'Medical Condition', text: 'hypertension' },",
+                                "    { label: 'Medical Condition', text: 'depression' },",
+                                "    { label: 'Medical Condition', text: 'chronic atrial fibrillation' },",
+                                "    { label: 'Symptom', text: 'severe nausea and vomiting' },",
+                                "    { label: 'Medical Condition', text: 'urinary tract infection' },",
                                 "    { branch: 'Medical', group: 'History' }",
-                                "  ],",
-                                "  prompt_tokens: 236,",
-                                "  completion_tokens: 238,",
-                                "  total_tokens: 474",
+                                "  ]",
                                 "}",
                                 ""
                             ]
@@ -101,7 +87,7 @@
         {
             "language": "javascript",
             "source": [
-                "let result = await nlpPrompter.fit('ner.njk', {\n    domain: 'medical',\n    labels: [\"SYMPTOM\", \"DISEASE\"],\n    textInput: 'The patient is a 93-year-old female with a medical history of chronic right hip pain, osteoporosis, hypertension, depression, and chronic atrial fibrillation admitted for evaluation and management of severe nausea and vomiting and urinary tract infection'\n  });\nconsole.log(result);"
+                "let result = await prompt.fit('ner', {\n    domain: 'medical',\n    labels: [\"symptom\", \"disease\"],\n    textInput: 'The patient is a 93-year-old female with a medical history of chronic right hip pain, osteoporosis, hypertension, depression, and chronic atrial fibrillation admitted for evaluation and management of severe nausea and vomiting and urinary tract infection'\n  });\nconsole.log(result);"
             ],
             "outputs": [
                 {
@@ -109,25 +95,16 @@
                         {
                             "mime": "application/vnd.code.notebook.stdout",
                             "value": [
+                                "2.5018897919654846 seconds",
                                 "{",
-                                "  text: [",
-                                "    {",
-                                "      label: 'SYMPTOM',",
-                                "      text: 'nausea and vomiting',",
-                                "      start: 44,",
-                                "      end: 66",
-                                "    },",
-                                "    {",
-                                "      label: 'DISEASE',",
-                                "      text: 'urinary tract infection',",
-                                "      start: 67,",
-                                "      end: 93",
-                                "    },",
+                                "  promptTokens: 190,",
+                                "  completionTokens: 56,",
+                                "  totalTokens: 246,",
+                                "  data: [",
+                                "    { label: 'symptom', text: 'nausea and vomiting' },",
+                                "    { label: 'disease', text: 'urinary tract infection' },",
                                 "    { branch: 'Medical', group: 'History' }",
-                                "  ],",
-                                "  prompt_tokens: 244,",
-                                "  completion_tokens: 75,",
-                                "  total_tokens: 319",
+                                "  ]",
                                 "}",
                                 ""
                             ]
@@ -146,7 +123,7 @@
         {
             "language": "javascript",
             "source": [
-                "let text = \"Leptomeningeal metastases (LM) occur in patients with breast cancer (BC) and lung cancer (LC). The cerebrospinal fluid (CSF) tumour microenvironment (TME) of LM patients is not well defined at a single-cell level. We did an analysis based on single-cell RNA sequencing (scRNA-seq) data and four patient-derived CSF samples of idiopathic intracranial hypertension (IIH)\"\nlet labels = [\n  {'E': 'DISEASE', 'W': 'Leptomeningeal metastases'}, \n  {'E': 'DISEASE', 'W': 'breast cancer'}, \n  {'E': 'DISEASE', 'W': 'lung cancer'}, \n  {'E': 'BIOMARKER', 'W': 'cerebrospinal fluid'}, \n  {'E': 'DISEASE', 'W': 'tumour microenvironment'}, \n  {'E': 'TEST', 'W': 'single-cell RNA sequencing'}, \n  {'E': 'DISEASE', 'W': 'idiopathic intracranial hypertension'}\n]\nlet fineTune = [\n  [text, labels]\n]\n\nlet result = await nlpPrompter.fit('ner.njk', {\n    domain: 'medical',\n    labels: [\"SYMPTOM\", \"DISEASE\"],\n    examples: fineTune,\n    textInput: 'The patient is a 93-year-old female with a medical history of chronic right hip pain, osteoporosis, hypertension, depression, and chronic atrial fibrillation admitted for evaluation and management of severe nausea and vomiting and urinary tract infection'\n  });\nconsole.log(result);"
+                "let text = \"Leptomeningeal metastases (LM) occur in patients with breast cancer (BC) and lung cancer (LC). The cerebrospinal fluid (CSF) tumour microenvironment (TME) of LM patients is not well defined at a single-cell level. We did an analysis based on single-cell RNA sequencing (scRNA-seq) data and four patient-derived CSF samples of idiopathic intracranial hypertension (IIH)\"\nlet labels = [\n  {'label': 'disease', 'text': 'Leptomeningeal metastases'}, \n  {'label': 'disease', 'text': 'breast cancer'}, \n  {'label': 'disease', 'text': 'lung cancer'}, \n  {'label': 'biomarker', 'text': 'cerebrospinal fluid'}, \n  {'label': 'disease', 'text': 'tumour microenvironment'}, \n  {'label': 'test', 'text': 'single-cell RNA sequencing'}, \n  {'label': 'disease', 'text': 'idiopathic intracranial hypertension'}\n]\nlet fineTune = [\n  [text, labels]\n]\n\nlet result = await prompt.fit('ner', {\n    domain: 'medical',\n    labels: [\"symptom\", \"disease\" ],\n    examples: fineTune,\n    textInput: 'The patient is a 93-year-old female with a medical history of chronic right hip pain, osteoporosis, hypertension, depression, and chronic atrial fibrillation admitted for evaluation and management of severe nausea and vomiting and urinary tract infection'\n  });\nconsole.log(result);"
             ],
             "outputs": [
                 {
@@ -154,25 +131,20 @@
                         {
                             "mime": "application/vnd.code.notebook.stdout",
                             "value": [
+                                "7.170070542097092 seconds",
                                 "{",
-                                "  text: [",
-                                "    {",
-                                "      label: 'SYMPTOM',",
-                                "      text: 'nausea and vomiting',",
-                                "      start: 44,",
-                                "      end: 68",
-                                "    },",
-                                "    {",
-                                "      label: 'DISEASE',",
-                                "      text: 'urinary tract infection',",
-                                "      start: 71,",
-                                "      end: 97",
-                                "    },",
-                                "    { branch: 'Medical History', group: 'Chronic Conditions' }",
-                                "  ],",
-                                "  prompt_tokens: 374,",
-                                "  completion_tokens: 78,",
-                                "  total_tokens: 452",
+                                "  promptTokens: 499,",
+                                "  completionTokens: 194,",
+                                "  totalTokens: 693,",
+                                "  data: [",
+                                "    { label: 'symptom', text: 'chronic right hip pain' },",
+                                "    { label: 'disease', text: 'osteoporosis' },",
+                                "    { label: 'disease', text: 'hypertension' },",
+                                "    { label: 'disease', text: 'depression' },",
+                                "    { label: 'disease', text: 'chronic atrial fibrillation' },",
+                                "    { label: 'symptom', text: 'severe nausea and vomiting' },",
+                                "    { label: 'disease', text: 'urinary tract infection' }",
+                                "  ]",
                                 "}",
                                 ""
                             ]

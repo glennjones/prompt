@@ -175,7 +175,6 @@ class Parser {
             try {
                 const repaired = jsonrepair(objectString);
                 const obj = JSON.parse(repaired);
-                // Use JSON.parse() to safely evaluate the string as a JavaScript object.
                 objects.push(obj);
             } catch (e) {
                 // If the string cannot be safely evaluated as a JavaScript object, log an error and move on to the next object.

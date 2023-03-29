@@ -31,7 +31,7 @@
         {
             "language": "javascript",
             "source": [
-                "let model = new OpenAI(apiKey);\nlet nlpPrompter = new Prompter(model);"
+                "let model = new OpenAI(apiKey);\nlet prompt = new Prompter(model);"
             ],
             "outputs": []
         },
@@ -45,7 +45,7 @@
         {
             "language": "javascript",
             "source": [
-                "let result = await nlpPrompter.fit('ner.njk', {\n    domain: 'ux design',\n    textInput: 'Senior UX Researcher, part-time 6 month contract, Edinburgh - Hybrid',\n  });\nconsole.log(result);"
+                "let result = await prompt.fit('ner', {\n    domain: 'ux design',\n    textInput: 'Senior UX Researcher, part-time 6 month contract, Edinburgh - Hybrid',\n  });\nconsole.log(result);"
             ],
             "outputs": [
                 {
@@ -53,22 +53,17 @@
                         {
                             "mime": "application/vnd.code.notebook.stdout",
                             "value": [
-                                "3.7098181660175324 seconds",
+                                "4.795371791958809 seconds",
                                 "{",
-                                "  promptTokens: 174,",
-                                "  completionTokens: 145,",
-                                "  totalTokens: 319,",
+                                "  promptTokens: 152,",
+                                "  completionTokens: 99,",
+                                "  totalTokens: 251,",
                                 "  data: [",
-                                "    {",
-                                "      label: 'Job Title',",
-                                "      text: 'Senior UX Researcher',",
-                                "      start: 0,",
-                                "      end: 18",
-                                "    },",
-                                "    { label: 'Contract Type', text: 'part-time', start: 19, end: 28 },",
-                                "    { label: 'Contract Duration', text: '6 month', start: 29, end: 37 },",
-                                "    { label: 'Location', text: 'Edinburgh', start: 38, end: 47 },",
-                                "    { label: 'Work Type', text: 'Hybrid', start: 48, end: 55 },",
+                                "    { label: 'Position', text: 'Senior UX Researcher' },",
+                                "    { label: 'Contract Type', text: 'part-time' },",
+                                "    { label: 'Contract Duration', text: '6 month' },",
+                                "    { label: 'Location', text: 'Edinburgh' },",
+                                "    { label: 'Work Type', text: 'Hybrid' },",
                                 "    { branch: 'UX Design', group: 'Research' }",
                                 "  ]",
                                 "}",
@@ -89,7 +84,7 @@
         {
             "language": "javascript",
             "source": [
-                "let result = await nlpPrompter.fit('ner.njk', {\n    domain: 'ux design',\n    labels: [\"JOBTITLE\", \"SENORITY\", \"EMPLOYMENT_TYPE\", \"DURATION\", \"LOCATION\", \"REMOTE_OPTION\"],\n    textInput: 'Senior Product Designer (UX)'\n  });\nconsole.log(result);"
+                "let result = await prompt.fit('ner', {\n    domain: 'ux design',\n    labels: [\"JOBTITLE\", \"SENORITY\", \"EMPLOYMENT_TYPE\", \"DURATION\", \"LOCATION\", \"REMOTE_OPTION\"],\n    textInput: 'Senior Product Designer (UX)'\n  });\nconsole.log(result);"
             ],
             "outputs": [
                 {
@@ -97,21 +92,15 @@
                         {
                             "mime": "application/vnd.code.notebook.stdout",
                             "value": [
-                                "3.963730875015259 seconds",
+                                "2.788457082986832 seconds",
                                 "{",
-                                "  promptTokens: 194,",
-                                "  completionTokens: 100,",
-                                "  totalTokens: 294,",
+                                "  promptTokens: 172,",
+                                "  completionTokens: 57,",
+                                "  totalTokens: 229,",
                                 "  data: [",
-                                "    {",
-                                "      label: 'JOBTITLE',",
-                                "      text: 'Senior Product Designer',",
-                                "      start: 0,",
-                                "      end: 21",
-                                "    },",
-                                "    { label: 'SENIORITY', text: 'Senior', start: 0, end: 6 },",
-                                "    { label: 'EMPLOYMENT_TYPE', text: 'UX', start: 22, end: 24 },",
-                                "    { branch: 'Product Design', group: 'UX' }",
+                                "    { label: 'JOBTITLE', text: 'Senior Product Designer' },",
+                                "    { label: 'SENORITY', text: 'Senior' },",
+                                "    { label: 'EMPLOYMENT_TYPE', text: 'UX' }",
                                 "  ]",
                                 "}",
                                 ""
@@ -131,7 +120,7 @@
         {
             "language": "javascript",
             "source": [
-                "let text = \"Senior UX Researcher, part-time 6 month contract, Edinburgh - Hybrid\"\nlet labels = [\n  { label: 'JOBTITLE', text: 'Senior UX Researcher', start: 0, end: 20 },\n  { label: 'SENIORITY', text: 'Senior', start: 0, end: 6 },\n  { label: 'EMPLOYMENT_TYPE', text: 'part-time', start: 22, end: 31 },\n  { label: 'EMPLOYMENT_TYPE', text: 'contract', start: 40, end: 47 },\n  { label: 'DURATION', text: '6 month', start: 32, end: 39 },\n  { label: 'LOCATION', text: 'Edinburgh', start: 50, end: 59 },\n  { label: 'REMOTE_OPTION', text: 'Hybrid', start: 62, end: 70 },\n  { branch: 'UX Design', group: 'Research' }\n]\nlet fineTune = [\n  [text, labels]\n]\n\nlet result = await nlpPrompter.fit('ner.njk', {\n    domain: 'ux design',\n    labels: [\"JOBTITLE\", \"SENORITY\", \"EMPLOYMENT_TYPE\", \"DURATION\", \"LOCATION\", \"REMOTE_OPTION\"],\n    textInput: 'UX Copy Writer Team Leader, Edinburgh or Hybrid',\n    examples: fineTune\n    });\nconsole.log(result);"
+                "let text = \"Senior UX Researcher, part-time 6 month contract, Edinburgh - Hybrid\"\nlet labels = [\n  { label: 'JOBTITLE', text: 'Senior UX Researcher' },\n  { label: 'SENIORITY', text: 'Senior' },\n  { label: 'EMPLOYMENT_TYPE', text: 'part-time' },\n  { label: 'EMPLOYMENT_TYPE', text: 'contract' },\n  { label: 'DURATION', text: '6 month' },\n  { label: 'LOCATION', text: 'Edinburgh' },\n  { label: 'REMOTE_OPTION', text: 'Hybrid' },\n  { branch: 'UX Design', group: 'Research' }\n]\nlet fineTune = [\n  [text, labels]\n]\n\nlet jobTitle = 'UX Copy Writer Team Leader, Edinburgh or Hybrid'\nlet result = await prompt.fit('ner.njk', {\n    domain: 'ux design',\n    labels: [\"JOBTITLE\", \"SENORITY\", \"EMPLOYMENT_TYPE\", \"DURATION\", \"LOCATION\", \"REMOTE_OPTION\"],\n    textInput: jobTitle,\n    examples: fineTune\n    });\nconsole.log(result);"
             ],
             "outputs": [
                 {
@@ -139,20 +128,15 @@
                         {
                             "mime": "application/vnd.code.notebook.stdout",
                             "value": [
-                                "3.6083810420036317 seconds",
+                                "5.108870041012764 seconds",
                                 "{",
-                                "  promptTokens: 526,",
-                                "  completionTokens: 147,",
-                                "  totalTokens: 673,",
+                                "  promptTokens: 413,",
+                                "  completionTokens: 108,",
+                                "  totalTokens: 521,",
                                 "  data: [",
-                                "    {",
-                                "      label: 'JOBTITLE',",
-                                "      text: 'UX Copy Writer Team Leader',",
-                                "      start: 0,",
-                                "      end: 28",
-                                "    },",
-                                "    { label: 'LOCATION', text: 'Edinburgh', start: 30, end: 39 },",
-                                "    { label: 'REMOTE_OPTION', text: 'Hybrid', start: 42, end: 50 },",
+                                "    { label: 'JOBTITLE', text: 'UX Copy Writer Team Leader' },",
+                                "    { label: 'LOCATION', text: 'Edinburgh' },",
+                                "    { label: 'REMOTE_OPTION', text: 'Hybrid' },",
                                 "    { branch: 'UX Design', group: 'Copy Writing' }",
                                 "  ]",
                                 "}",
@@ -164,53 +148,61 @@
             ]
         },
         {
-            "language": "javascript",
+            "language": "markdown",
             "source": [
-                "'Senior UX Researcher, part-time 6 month contract, Edinburgh - Hybrid'.slice(0, 28)  // JOBTITLE"
+                "### Function to get the start and end positions of the labels"
             ],
-            "outputs": [
-                {
-                    "items": [
-                        {
-                            "mime": "text/plain",
-                            "value": [
-                                "\u001b[32m'Senior UX Researcher, part-t'\u001b[39m"
-                            ]
-                        }
-                    ]
-                }
-            ]
+            "outputs": []
         },
         {
             "language": "javascript",
             "source": [
-                "'Senior UX Researcher, part-time 6 month contract, Edinburgh - Hybrid'.slice(30, 39)  // LOCATION"
+                "function addStartEnd(text, entities){\n    let newEntities = [];\n    for (let entity of entities) {\n        let start = 0;\n        let end = 0;\n        start = text.indexOf(entity.text);\n        if(start > -1){\n            end = start + entity.text.length;\n            newEntities.push({\n                text: entity.text,\n                start: start,\n                end: end,\n                label: entity.label\n            });\n        }else{\n            console.log('could not find entity in text: ', entity);\n        }\n    }\n    return newEntities;\n}"
             ],
-            "outputs": [
-                {
-                    "items": [
-                        {
-                            "mime": "text/plain",
-                            "value": [
-                                "\u001b[32m'e 6 month'\u001b[39m"
-                            ]
-                        }
-                    ]
-                }
-            ]
+            "outputs": []
         },
         {
             "language": "javascript",
             "source": [
-                "'Senior UX Researcher, part-time 6 month contract, Edinburgh - Hybrid'.slice(42, 50) // REMOTE_OPTION"
+                "addStartEnd(jobTitle, result.data);"
             ],
             "outputs": [
                 {
                     "items": [
                         {
+                            "mime": "application/vnd.code.notebook.stdout",
+                            "value": [
+                                "could not find entity in text:  { branch: 'UX Design', group: 'Copy Writing' }",
+                                ""
+                            ]
+                        }
+                    ]
+                },
+                {
+                    "items": [
+                        {
                             "mime": "text/plain",
                             "value": [
-                                "\u001b[32m'ntract, '\u001b[39m"
+                                "[",
+                                "  {",
+                                "    text: \u001b[32m'UX Copy Writer Team Leader'\u001b[39m,",
+                                "    start: \u001b[33m0\u001b[39m,",
+                                "    end: \u001b[33m26\u001b[39m,",
+                                "    label: \u001b[32m'JOBTITLE'\u001b[39m",
+                                "  },",
+                                "  {",
+                                "    text: \u001b[32m'Edinburgh'\u001b[39m,",
+                                "    start: \u001b[33m28\u001b[39m,",
+                                "    end: \u001b[33m37\u001b[39m,",
+                                "    label: \u001b[32m'LOCATION'\u001b[39m",
+                                "  },",
+                                "  {",
+                                "    text: \u001b[32m'Hybrid'\u001b[39m,",
+                                "    start: \u001b[33m41\u001b[39m,",
+                                "    end: \u001b[33m47\u001b[39m,",
+                                "    label: \u001b[32m'REMOTE_OPTION'\u001b[39m",
+                                "  }",
+                                "]"
                             ]
                         }
                     ]

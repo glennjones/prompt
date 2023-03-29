@@ -1,20 +1,20 @@
 class Model {
-    constructor(name, description) {
-        this.name = name;
-        this.description = description;
-    }
+  constructor(name, description) {
+    this.name = name;
+    this.description = description;
+  }
 
-    list_models() {
-        throw new Error("Not implemented");
-    }
+  listModels() {
+    throw new Error('Not implemented');
+  }
 
-    verify_model(model) {
-        return this.list_models().includes(model);
-    }
+  verifyModel(model) {
+    return this.listModels().includes(model);
+  }
 
-    run() {
-        throw new Error("Not implemented");
-    }
+  run() {
+    throw new Error('Not implemented');
+  }
 }
 
 module.exports = Model;

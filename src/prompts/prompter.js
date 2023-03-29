@@ -11,28 +11,22 @@ const changeCase = require("change-case");
 const Nunjucks = require('nunjucks');
 const htmlEntities = require('html-entities');
 const Parser = require("../models/parser/parser.js");
+const utilities = require("../models/utils/utilities.js");
 
 
-
-
-function clone(obj) {
-    return JSON.parse(JSON.stringify(obj));
-}
-
-// const dirPath = fileURLToPath(new URL('./templates/', import.meta.url));
 const dirPath = path.join(__dirname, 'templates');
+
 
 class Prompter {
 
-    // defaults
-    
-    // allowedMissingVariables = ["examples", "description", "output_format"]
+
     defaults = {
         templatesPath: dirPath,
         templateCaching: false,
         promptHash: false,
         cache: null,
     }
+
 
     constructor(model, options) {
         this.model = model;
@@ -61,58 +55,46 @@ class Prompter {
         return undeclared_variables;
     }
     
-    generatePrompt(templateName, options) {
-        // find missing variables
-        /*
-        var variables = this.getTemplateVariables(templateName);
-        var variablesMissing = [];
-        for (var _i = 0, variables1 = variables; _i < variables1.length; _i++) {
-            var variable = variables1[_i];
-            if (variable in kwargs === false && this.allowedMissingVariables.indexOf(variable) === -1) {
-                variablesMissing.push(variable);
-            }
+    generatePrompt(templateName, data) {
+        if(templateName.endsWith('.njk') === false) {
+            templateName += '.njk';
         }
-        assert(variablesMissing.length === 0, "Missing required variables in template " + variablesMissing);
-        */
-
-        // load and render template
-        //const fullPath = fileURLToPath(new URL('./templates/' + templateName, import.meta.url));
         const fullPath = path.join(this.config.templatesPath, templateName);
 
-        let data = {}
-        let keys = Object.keys(options);
+        let templateData = {}
+        let keys = Object.keys(data);
         keys.forEach(key => {
-            data[changeCase.snakeCase(key)] = options[key];
+            templateData[changeCase.snakeCase(key)] = data[key];
         });
 
         var template = this.environment.getTemplate(fullPath);
-        var prompt = template.render(data).trim();
+        var prompt = template.render(templateData).trim();
         // decode html entities from nunjucks
         return htmlEntities.decode(prompt);
     }
 
-    hashObject(obj) {
+   
+    /**
+    *  Creates a hash of the prompt object
+    * @param {Object} 
+    * @returns {string} hash
+    */
+    hashPrompt(promptObj) {
         const hash = crypto.createHash('sha256');
-        hash.update(JSON.stringify(obj));
+        hash.update(JSON.stringify(promptObj));
         return hash.digest('hex');
     }
 
-
+    /**
+     * Run the model with the prompt
+     * @param {string} templateName
+     * @param {Object} options
+     * @returns {Object} output
+    */
     async fit(templateName, options) {
-        /*
-        let promptVariables = this.getTemplateVariables(templateName);
-        let promptKwargs = {};
-        let modelKwargs = {};
-        for (let variable in kwargs) {
-            if (promptVariables.includes(variable)) {
-                promptKwargs[variable] = kwargs[variable];
-            } else if (this.modelVariables.includes(variable)) {
-                modelKwargs[variable] = kwargs[variable];
-            }
-        }
-        */
+
         let prompt = this.generatePrompt(templateName, options);  
-        let promptHash = this.hashObject(prompt);
+        let promptHash = this.hashPrompt(prompt);
         if(this.cache) {
             let cachedResult = await this.cache.get(promptHash);
             if(cachedResult) {
@@ -147,28 +129,44 @@ class Prompter {
         
     }
 
-    parseJSON(json) {
+    /**
+    *  Parse text string into JSON
+    * @param {string} text
+    * @returns {Object}
+    */
+    parseJSON(text) {
         try {
-            const parser  = new Parser();
-            return parser.extractCompleteObjects(json);
+            const parser = new Parser();
+            return parser.extractCompleteObjects(text);
         } catch (err) {
             console.error(err)
             return { err: 'error passing results, please check the console'};
         }
     }
 
+
+    /**
+     *  This turns all the keys in the output object to camelCase
+     * @param {Object} obj 
+     * @return {Object} 
+     */
     formatOutput(obj) {
-        let out = {}
-        let keys = Object.keys(obj);
+        let out = utilities.clone(obj);
+        let keys = Object.keys(out);
+        // camelCase all object property names
         keys.forEach(key => {
-            out[changeCase.camelCase(key)] = obj[key];
+            if(changeCase.camelCase(key) !== key){
+                out[changeCase.camelCase(key)] = out[key];
+                delete out[key];
+            }
         });
-        out.data = clone(out.text)
-        delete out.text;
+        // if there is a text property, rename it to data
+        if(out.text){
+            out.data = utilities.clone(out.text)
+            delete out.text;
+        }
         return out;
     }
-
-
 }
 
 module.exports = Prompter;

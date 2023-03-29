@@ -1,8 +1,25 @@
 const Prompter = require('../src/prompts/prompter.js');
 const MockModel = require('../src/models/mock-model.js');
+const crypto = require('crypto');
 
 
+describe('hashPrompt function', () => {
 
+  let model = new MockModel();
+  let prompter = new Prompter(model);
+
+  it('should hash the prompt object and return a hex string', () => {
+    const promptObj = { prompt: 'What biggest city in the UK?' };
+    const hash = crypto.createHash('sha256').update(JSON.stringify(promptObj)).digest('hex');
+    expect(prompter.hashPrompt(promptObj)).toEqual(hash);
+  });
+
+  it('should return an empty string for an empty prompt object', () => {
+    const emptyPromptObj = {};
+    const hash = crypto.createHash('sha256').update(JSON.stringify(emptyPromptObj)).digest('hex');
+    expect(prompter.hashPrompt(emptyPromptObj)).toEqual(hash);
+  });
+});
 
 describe('parseJSON function', () => {
 

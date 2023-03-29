@@ -16,7 +16,9 @@ const utilities = require("../models/utils/utilities.js");
 
 const dirPath = path.join(__dirname, 'templates');
 
-
+/**
+ * The Prompter class is used to generate and excute prompts for LLMs.
+ */
 class Prompter {
 
 
@@ -27,7 +29,15 @@ class Prompter {
         cache: null,
     }
 
-
+    /**
+     * Creates a new instance of the prompter.
+     * @constructor
+     * @param {Object} model - The model object to use with prompter.
+     * @param {Object} options - The options object to configure the template engine.
+     * @param {string} options.templatesPath - The path to the directory containing the template files.
+     * @param {boolean} [options.templateCaching=true] - Whether to enable template caching.
+     * @param {object} [options.cache] - The optional cache object to use with prompter.
+     */
     constructor(model, options) {
         this.model = model;
         this.config = Object.assign({}, this.defaults, options);
@@ -42,10 +52,15 @@ class Prompter {
         this.environment = new Nunjucks.Environment(resolver)
     }
 
+    /**
+     * Lists all the templates available in the prompter.
+     */
     listTemplates() {
         return this.environment.listTemplates();
     }
     
+    /*
+    // TODO: implement this - its not part of nunjucks
     getTemplateVariables(templateName) {
         // gets the variables used in a template
 
@@ -54,7 +69,15 @@ class Prompter {
         var undeclared_variables = meta.findUndeclaredVariables(parsed_content);
         return undeclared_variables;
     }
+    */
     
+
+    /**
+     * Generates the prompt
+     * @param {string} templateName
+     * @param {Object} data - Data to pass changes to match the template variables
+     * @returns {string} prompt
+    */
     generatePrompt(templateName, data) {
         if(templateName.endsWith('.njk') === false) {
             templateName += '.njk';
@@ -88,7 +111,7 @@ class Prompter {
     /**
      * Run the model with the prompt
      * @param {string} templateName
-     * @param {Object} options
+     * @param {Object} options - Options to pass to the model and used to generate the prompt
      * @returns {Object} output
     */
     async fit(templateName, options) {

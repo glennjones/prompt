@@ -8,17 +8,21 @@ class Parser {
     }
 
 
-    // check if a string is valid JSON
-    isValidJSON(inputStr) {
+    /**
+     * Return boolean if strin can be parsed to valid JSON
+     * @param {string} str 
+     * @returns {boolean}
+     */
+    isValidJSON(str) {
         try {
-            JSON.parse(inputStr);
+            JSON.parse(str);
             return true;
         } catch (e) {
             return false;
         }
     }
     
-    // check if a string is valid Python
+    // 
     getCombinations(candidateMarks, n, shouldEndMark = null) {
         let combinations = [];
         for (let i = 1; i <= n; i++) {
@@ -52,17 +56,18 @@ class Parser {
 
     completeJsonObject(jsonStr, completionStr) {
         while (true) {
+            let jsonObj;
             if (!jsonStr) {
                 throw new Error("Couldn't fix JSON");
             }
             try {
                 const completeJsonStr = jsonStr + completionStr;
-                const pythonObj = JSON.parse(completeJsonStr);
+                jsonObj = JSON.parse(completeJsonStr);
             } catch (e) {
                 jsonStr = jsonStr.slice(0, -1);
                 continue;
             }
-            return pythonObj;
+            return jsonObj;
         }
     }
 
@@ -136,6 +141,11 @@ class Parser {
         return outputDict;
     }
 
+    /**
+     * 
+     * @param {string} string 
+     * @returns {string[]}
+     */
     extractCompleteObjects(string) {
         const objectRegex = /(?<!\\)(\[[^][]*?(?<!\\)\]|\{[^{}]*\})/g;
         // The regular expression pattern matches any string starting with an opening brace or bracket,

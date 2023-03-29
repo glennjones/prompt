@@ -11,6 +11,7 @@ const { Configuration, OpenAIApi } = require('openai');
 const axios = require('axios');
 const axiosRetry = require('axios-retry');
 const { performance } = require('perf_hooks');
+const utilities = require("./utils/utilities.js");
 
 
 axiosRetry(axios, {
@@ -25,7 +26,9 @@ axiosRetry(axios, {
 });
 
 
-// regexes for model names and their token counts
+/**
+ * @constant {Array} GPTModelTOKENS - The maximum number of tokens for each GPT model
+ */
 const GPTModelTOKENS = [
     { regEx: /gpt-3.5-turbo((?=-).*)?/, maxTokens: 4096},
     { regEx: /\bdavinci\b/, maxTokens: 4000},
@@ -34,13 +37,17 @@ const GPTModelTOKENS = [
     { regEx: /\bada\b/, maxTokens: 2048},
 ]
 
-function clone(obj) {
-    return JSON.parse(JSON.stringify(obj));
-}
 
-
+/**
+ * @class OpenAI
+ */ 
 class OpenAI extends Model {
 
+    /**
+   * @constructor
+   * @param {string} name - The name of the model
+   * @param {string} description - The description of the model
+   */
     constructor(apiKey, model = "text-davinci-003") {
         super();
         this.name = "OpenAI";
@@ -60,7 +67,10 @@ class OpenAI extends Model {
         //assert(this.supportedModels.includes(this.model), "model not supported");
     }
 
-
+    /**
+     * Lists all the models available in the model.
+     * @returns {Array} - An array of model objects
+     * */
     async listModels() {
 
         const apiEndpoint = 'https://api.openai.com/v1/models';
@@ -89,23 +99,20 @@ class OpenAI extends Model {
             }
             return null;
         }
-        
-        /*
-        // get all models for OpenAI API
-        const listOfModels = this.openai.Model.list()["data"].map(model => model.id);
-        // compare with supported models and return modellist
-        const models = [];
-        for (const model of this.supportedModels) {
-            if (listOfModels.includes(model)) {
-                models.push(model);
-            }
-        }
-      
-        return models;
-        */
     }
 
-
+    /**
+    * @param {string} prompt - The prompt to use for the completion
+    * @param {Object} options - The options to use for the completion
+    * @param {string} options.suffix - The suffix to use for the completion
+    * @param {number} options.maxTokens - The maximum number of tokens to generate
+    * @param {number} options.temperature - The temperature to use for the completion
+    * @param {number} options.topP - The topP to use for the completion
+    * @param {string} options.stop - The stop sequence to use for the completion
+    * @param {number} options.presencePenalty - The presence penalty to use for the completion
+    * @param {number} options.frequencyPenalty - The frequency penalty to use for the completion
+    * @returns {string} - The completion
+    * */
     async run(prompt, options) {
 
         let defaults = {
@@ -120,22 +127,6 @@ class OpenAI extends Model {
         let config = { ...defaults, ...options };
         const result = [];
 
-        /*
-        {
-            "model": "text-davinci-003",
-            "prompt": "Say this is a test",
-            "max_tokens": 7,
-            "temperature": 0,
-            "top_p": 1,
-            "n": 1,
-            "stream": false,
-            "logprobs": null,
-            "stop": "\n"
-        }
-        */
-
-
-     
         // Automatically calculate max output tokens if not specified
         if (!config.maxTokens) {
             const prompTokens = this.encoder.encode(prompt).length;
@@ -147,10 +138,9 @@ class OpenAI extends Model {
             config.maxTokens = modelmaxTokens - prompTokens;
         }
 
-
         const data = {};
         let response;
-        let completionsOpions = clone(config);
+        let completionsOpions = utilities.clone(config);
         completionsOpions.model = this.model;
         if (this.model.startsWith("gpt-3.5-turbo")) {
             completionsOpions.messages = [{role: "user", content: prompt}];
@@ -172,9 +162,16 @@ class OpenAI extends Model {
         return result
     }
 
-    // list of models
-    // GET  https://api.openai.com/v1/models
-
+    /**
+     * @param {Object} options - The options to use for the completion
+     * @param {string} options.model - The model to use for the completion
+     * @param {string} options.prompt - The prompt to use for the completion
+     * @param {number} options.maxTokens - The maximum number of tokens to generate
+     * @param {number} options.temperature - The temperature to use for the completion
+     * @param {number} options.topP - The topP to use for the completion
+     * @param {string} options.stop - The stop sequence to use for the completion
+     * @returns {string} - The completion
+     * */
     async getCompletions(options) {
         // look in cache first
      

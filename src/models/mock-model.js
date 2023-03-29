@@ -1,5 +1,8 @@
 const Model = require('./model.js');
 
+/**
+ * MockModel for testing
+ */
 class MockModel extends Model {
   constructor() {
     super();

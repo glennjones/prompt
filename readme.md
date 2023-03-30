@@ -1,21 +1,21 @@
 # Prompt
 
 ### IN DEVELOPMENT - INTERFACE IS NOT YET FIXED
+
 At the moment this code is more of a sketched idea than a library, but it is usable if you are interested in tring it out.
 
-TODO
-* ~~Get list of models from rest API~~
-* ~~Selection of fine tuned models works~~
-* ~~Request retry after fixed period~~
-* ~~Add Prompt hash~~
-* ~~Add Cache interface~~
-* ~~Add simple json file cache~~
-* Add que system
-* Add examples for all templates
-* Add JSDocs to support typescript
+### What is prompt
 
+Its a light warpper around LLM chat inetrfaces such as OpenAI's ChatGPT. It provides:
 
-Based on the ideas/code of Promptify - https://github.com/promptslab/promptify
+- Prompt templating
+- Simple interface prompt building in JavaScript
+- Switching between model providers - OpenAI built-in, expanable to others
+- Fine-tuned model selection for OpenAI
+- Structured output for coding aginst
+- Safe conversion output text to JSON
+- Automatic API retries if service is busy
+- Caching archecture
 
 ### Install library
 
@@ -43,7 +43,7 @@ let result = await prompt.fit('ner', {
     textInput: 'Senior UX Researcher, part-time 6 month contract, Edinburgh - Hybrid',
   });
 console.log(result);
-                                             
+
 ### Output
 
 {
@@ -59,4 +59,24 @@ console.log(result);
     { branch: 'UX Design', group: 'Research' }
   ]
 }
- ```
+```
+
+### TODO
+
+- ~~Get list of models from rest API~~
+- ~~Selection of fine tuned models works~~
+- ~~Request retry after fixed period~~
+- ~~Add Prompt hash~~
+- ~~Add Cache interface~~
+- ~~Add simple json file cache~~
+- Add examples for all templates
+- Add JSDocs to support typescript
+- Add memory cache
+- Parse templates to give user list all variables
+- Check chat gtp 3.5 works
+  - Check user context is working
+  - Check prompt-chains are working
+  - Consider extending template structure to have prompt-chains
+- Look at allowing the upload and storage of templates
+
+Based on the ideas/code of Promptify - https://github.com/promptslab/promptify

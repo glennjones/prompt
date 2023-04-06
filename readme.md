@@ -1,7 +1,5 @@
 # Prompt
 
-### IN DEVELOPMENT - INTERFACE IS NOT YET FIXED
-
 At the moment this code is more of a sketched idea than a library, but it is usable if you are interested in tring it out.
 
 ### What is prompt
@@ -17,10 +15,13 @@ Its a light warpper around LLM chat inetrfaces such as OpenAI's ChatGPT. It prov
 - Automatic API retries if service is busy
 - Caching archecture
 
+I have been using it to benchmark NER and Classification tasks with OpenAI prompts against other approcahes.  
+
+
 ### Install library
 
 ```
-npm i https://github.com/glennjones/prompt
+npm i @glennjones/prompt
 ```
 
 ### Setup the objects

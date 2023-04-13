@@ -1,10 +1,10 @@
 # Prompt
 
-At the moment this code is more of a sketched idea than a library, but it is usable if you are interested in tring it out.
+At the moment this code is more of a sketched idea than a library, but it is usable if you are interested in tring it out. It may be well your time worth looking at the [Langchain JS](https://github.com/hwchase17/langchainjs) which is the most heavily used tool of this type at the moment (Apr 2023). It is more advanced and has a lot of additional/useful features this tool does not have.
 
 ### What is prompt
 
-Its a light warpper around LLM chat inetrfaces such as OpenAI's ChatGPT. It provides:
+Its a light warpper around LLM inetrfaces such as OpenAI's ChatGPT. It provides:
 
 - Prompt templating
 - Simple interface prompt building in JavaScript

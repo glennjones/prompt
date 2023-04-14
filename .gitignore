@@ -49,8 +49,11 @@ src/config/sites.ts
 
 data
 src/cache/*.jsonl
+src/cache/example.json
 
-example/nerBatch01.js
-example/nerBatch02.js
+examples/nerBatch01.js
+examples/nerBatch02.js
 
 notebooks/jobtitles.nnb
+
+

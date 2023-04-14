@@ -4,7 +4,8 @@
 const OpenAI  = require('./src/models/openai.js');
 const Prompter  = require('./src/prompts/prompter.js');
 const FileCache  = require('./src/cache/file-cache.js');
+const MongodbCache  = require('./src/cache/mongodb-cache.js');
 
-module.exports = { OpenAI, Prompter, FileCache };
+module.exports = { OpenAI, Prompter, FileCache, MongodbCache  };
 
 

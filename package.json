@@ -24,6 +24,7 @@
     "gpt-3-encoder": "^1.1.4",
     "html-entities": "^2.3.3",
     "jsonrepair": "^3.0.2",
+    "mongodb": "^5.2.0",
     "n-readlines": "^1.0.1",
     "nunjucks": "^3.2.3",
     "openai": "^3.2.1",

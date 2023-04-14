@@ -1,6 +1,8 @@
 const FileCache = require('../src/cache/file-cache.js');
 
+
 /*
+
 jest.mock('fs', () => ({
     appendFileSync: jest.fn(),
     existsSync: jest.fn(),
@@ -8,6 +10,63 @@ jest.mock('fs', () => ({
     writeFileSync: jest.fn(),
     openSync: jest.fn(),
 }));
+
+
+
+
+jest.mock('n-readlines', () => {
+
+  const mockData01 = {
+    hash: "hash1",
+    prompt: "prompt 1",
+    result: {"data": "data1"},
+    created: new Date()
+  };
+  
+  const mockData02 = {
+    hash: "hash2",
+    prompt: "prompt 2",
+    result: {"data": "data2"},
+    created: new Date()
+  };
+  
+
+
+  const lines = [JSON.stringify(mockData01), JSON.stringify(mockData02)];
+  return jest.fn().mockImplementation(() => ({
+      next: () => lines.shift() || null
+  }));
+});
+
+
+jest.mock('fs', () => ({
+
+  existsSync: jest.fn(() => true),
+    readFileSync: jest.fn(() => {
+        return Buffer.from([JSON.stringify(mockData01), JSON.stringify(mockData02)]);
+    }),
+  }));
+  
+  describe('FileCache', () => {
+  describe('loadData()', () => {
+      it('should load data from file', () => {
+      const filePath = 'test-cache.jsonl';
+      const fileCache = new FileCache(filePath);
+  
+      const data = fileCache.loadData();
+  
+      expect(fs.existsSync).toHaveBeenCalledWith(filePath);
+      expect(fs.readFileSync).toHaveBeenCalledWith(filePath);
+        expect(data).toEqual([
+            { hash: 'test-hash-1', result: { cached: true } },
+            { hash: 'test-hash-2', result: { cached: true } },
+        ]);
+      });
+  });
+});
+
+
+
 
 jest.mock('n-readlines', () => {
     const lines = ['{"hash": "hash1", "result": {"data": "data1"}}', '{"hash": "hash2", "result": {"data": "data2"}}'];

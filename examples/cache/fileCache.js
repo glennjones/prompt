@@ -4,7 +4,7 @@ DotEnv.config();
 const apiKey = process.env.OPENAI_API_KEY;
 
 //import { OpenAI, Prompter } from './index.js';
-const { OpenAI, Prompter, FileCache } = require('../index.js');
+const { OpenAI, Prompter, FileCache } = require('../../index.js');
 
 async function test() {
   let model = new OpenAI(apiKey);

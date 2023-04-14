@@ -3,6 +3,17 @@
  * Base class for cache implementations
  * @class Cache
  */
+
+
+/**
+ * @typedef {Object} promptCacheData
+ * @property {string} hash
+ * @property {string} prompt
+ * @property {any} result
+ * @property {Date} created
+ */
+
+
 class Cache {
     /**
      * Creates an instance of Cache.

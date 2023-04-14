@@ -17,7 +17,7 @@
         {
             "language": "javascript",
             "source": [
-                "let classes = [\n    'DESIGN',\n    'RESEARCH',\n    'PRODUCT',\n    'OPS',\n    'MANAGEMENT',\n    'WRITING',\n    'DEVELOPMENT',\n    'GENERAL',\n    'STRATEGY',\n    'EDUCATION'\n]\n\nlet result = await nlpPrompter.fit('multiclass_classification', {\n    domain: 'ux design job titles',\n    nOutputLabels: 5,\n    textInput: `UX Design Lecturer`,\n    labels: classes\n  });\nconsole.log(result);"
+                "let classes = [\n    'DESIGN',\n    'RESEARCH',\n    'PRODUCT',\n    'OPS',\n    'CONTENT',\n    'DEVELOPMENT',\n    'GENERAL',\n    'STRATEGY',\n    'EDUCATION'\n]\n\nlet result = await nlpPrompter.fit('multilabel_classification', {\n    domain: 'ux design job titles',\n    nOutputLabels: 5,\n    textInput: `UX OPS`,\n    labels: classes\n  });\nconsole.log(result);"
             ],
             "outputs": [
                 {
@@ -25,24 +25,13 @@
                         {
                             "mime": "application/vnd.code.notebook.stdout",
                             "value": [
-                                "1.240708042025566 seconds",
+                                "1.2863734998703003 seconds",
                                 "{",
-                                "  promptTokens: 103,",
-                                "  completionTokens: 12,",
-                                "  totalTokens: 115,",
-                                "  data: [ { C: 'EDUCATION' } ]",
+                                "  promptTokens: 147,",
+                                "  completionTokens: 22,",
+                                "  totalTokens: 169,",
+                                "  data: [ { 'main class': 'OPS', branch: 'UX', group: 'OPS' } ]",
                                 "}",
-                                ""
-                            ]
-                        }
-                    ]
-                },
-                {
-                    "items": [
-                        {
-                            "mime": "application/vnd.code.notebook.stderr",
-                            "value": [
-                                "Debugger ending on ws://127.0.0.1:54584/1169644d-c13d-45ed-9f92-4908adb4bf1c",
                                 ""
                             ]
                         }

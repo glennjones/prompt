@@ -26,7 +26,7 @@ class FileCache extends Cache {
     /**
      * * Stores the completion object for the hash of a prompt
         * @param {string} hash  - the hash of the prompt
-        * @param {Object} value - the value to store
+        * @param {promptCacheData} value - the value to store
     */    
     async add(hash, value) {
         if(!this.data) {

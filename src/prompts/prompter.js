@@ -139,10 +139,9 @@ class Prompter {
             if(this.cache) {
                 await this.cache.add(promptHash, {
                     hash: promptHash,
-                    templateName,
-                    text: options.textInput,
                     prompt,
-                    result: out
+                    result: out,
+                    created: new Date()
                 });
             }
             return out;

@@ -141,7 +141,9 @@ class Prompter {
                     hash: promptHash,
                     prompt,
                     result: out,
-                    created: new Date()
+                    created: new Date(),
+                    templateName,
+                    text: options.textInput,
                 });
             }
             return out;

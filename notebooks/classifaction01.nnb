@@ -3,21 +3,21 @@
         {
             "language": "javascript",
             "source": [
-                "const Prompt = require('../index.js')\nconst {Prompter, OpenAI} = Prompt;\n\nconst DotEnv = require('dotenv');\nDotEnv.config({path: '../.env'});\nconst apiKey = process.env.OPENAI_API_KEY;"
+                "const Prompt = require('../index.js')\nconst {Prompter, OpenAI, FileCache} = Prompt;\n\nconst DotEnv = require('dotenv');\nDotEnv.config({path: '../.env'});\nconst apiKey = process.env.OPENAI_API_KEY;"
             ],
             "outputs": []
         },
         {
             "language": "javascript",
             "source": [
-                "let model = new OpenAI(apiKey);\nlet nlpPrompter = new Prompter(model);"
+                "let model = new OpenAI(apiKey);\n\nlet fileCache = new FileCache('./cache-classication01.jsonl');\nlet nlpPrompter = new Prompter(model, {cache: fileCache});"
             ],
             "outputs": []
         },
         {
             "language": "javascript",
             "source": [
-                "let classes = [\n    'DESIGN',\n    'RESEARCH',\n    'PRODUCT',\n    'OPS',\n    'CONTENT',\n    'DEVELOPMENT',\n    'GENERAL',\n    'STRATEGY',\n    'EDUCATION'\n]\n\nlet result = await nlpPrompter.fit('multilabel_classification', {\n    domain: 'ux design job titles',\n    nOutputLabels: 5,\n    textInput: `UX OPS`,\n    labels: classes\n  });\nconsole.log(result);"
+                "let classes = [\n    'DESIGN',\n    'RESEARCH',\n    'PRODUCT',\n    'OPS',\n    'CONTENT',\n    'DEVELOPMENT',\n    'GENERAL',\n    'STRATEGY',\n    'EDUCATION',\n    'MANAGEMENT',\n]\n\nlet result = await nlpPrompter.fit('ux-jobtitle-classification', {\n    domain: 'ux design job titles',\n    nOutputLabels: 5,\n    textInput: `UX/UI Copy Writer, Edinburgh or Hybrid`,\n    labels: classes\n  });\nconsole.log(JSON.stringify(result));"
             ],
             "outputs": [
                 {
@@ -25,13 +25,8 @@
                         {
                             "mime": "application/vnd.code.notebook.stdout",
                             "value": [
-                                "1.2863734998703003 seconds",
-                                "{",
-                                "  promptTokens: 147,",
-                                "  completionTokens: 22,",
-                                "  totalTokens: 169,",
-                                "  data: [ { 'main class': 'OPS', branch: 'UX', group: 'OPS' } ]",
-                                "}",
+                                "1.1516052079200745 seconds",
+                                "{\"promptTokens\":120,\"completionTokens\":17,\"totalTokens\":137,\"data\":[{\"label\":[\"CONTENT\",\"DEVELOPMENT\"]}],\"hash\":\"55a6bd1896d723e07803bc309a0780e9a266cee091d15fd14862a40688025b3f\"}",
                                 ""
                             ]
                         }

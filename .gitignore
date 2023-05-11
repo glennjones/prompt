@@ -56,4 +56,5 @@ examples/nerBatch02.js
 
 notebooks/jobtitles.nnb
 
-
+examples/classificationBatch01.js
+src/prompts/templates/ux-jobtitle-classification.njk

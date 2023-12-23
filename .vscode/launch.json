@@ -18,7 +18,7 @@
             "skipFiles": [
                 "<node_internals>/**"
             ],
-            "program": "${workspaceFolder}/examples/cache/mongodbCache.js"
+            "program": "${workspaceFolder}/examples/ner01.js"
         },
         {
             "name": "Debug Jest Tests",

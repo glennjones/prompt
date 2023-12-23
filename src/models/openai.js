@@ -9,7 +9,7 @@ const Model = require('./model.js');
 const { getEncoder } = require('./utils/bpe-encoder.js');
 const { Configuration, OpenAIApi } = require('openai');
 const axios = require('axios');
-const axiosRetry = require('axios-retry');
+const axiosRetry = require('axios-retry').default;
 const { performance } = require('perf_hooks');
 const utilities = require("./utils/utilities.js");
 

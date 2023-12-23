@@ -30,7 +30,10 @@ axiosRetry(axios, {
  * @constant {Array} GPTModelTOKENS - The maximum number of tokens for each GPT model
  */
 const GPTModelTOKENS = [
+    { regEx: /gpt-4((?=-).*)?/, maxTokens: 4096},
+    { regEx: /gpt-4-32k((?=-).*)?/, maxTokens: 32768},
     { regEx: /gpt-3.5-turbo((?=-).*)?/, maxTokens: 4096},
+    { regEx: /gpt-3.5-turbo-16k((?=-).*)?/, maxTokens: 16385},
     { regEx: /\bdavinci\b/, maxTokens: 4000},
     { regEx: /\bcurie\b/, maxTokens:  2048},
     { regEx: /\bbabbage\b/, maxTokens:  2048},
@@ -54,10 +57,14 @@ class OpenAI extends Model {
         this.description = "OpenAI API for text completion using various models";
         this.apiKey = apiKey;
         this.model = model;
-        const configuration = new Configuration({ apiKey: this.apiKey });
-        this.openai = new OpenAIApi(configuration);
+        //const configuration = new Configuration({ apiKey: this.apiKey });
+        //this.openai = new OpenAIApi(configuration);
         this.supportedModels = [
+            "gpt-4",
+            "gpt-4-32k",
             "gpt-3.5-turbo",
+            "gpt-3.5-turbo-16k",
+            "gpt-3.5-turbo-instruct",
             "text-davinci-003",
             "text-curie-001",
             "text-babbage-001",

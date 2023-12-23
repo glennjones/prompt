@@ -23,11 +23,15 @@ describe('OpenAI', () => {
       expect(openai.apiKey).toEqual('fake-api-key');
       expect(openai.model).toEqual('text-davinci-003');
       expect(openai.supportedModels).toEqual([
-        'gpt-3.5-turbo',
-        'text-davinci-003',
-        'text-curie-001',
-        'text-babbage-001',
-        'text-ada-001',
+        "gpt-4",
+        "gpt-4-32k",
+        "gpt-3.5-turbo",
+        "gpt-3.5-turbo-16k",
+        "gpt-3.5-turbo-instruct",
+        "text-davinci-003",
+        "text-curie-001",
+        "text-babbage-001",
+        "text-ada-001",
       ]);
       expect(openai.encoder).toBeDefined();
     });

@@ -25,8 +25,7 @@
                         {
                             "mime": "application/vnd.code.notebook.stdout",
                             "value": [
-                                "1.1516052079200745 seconds",
-                                "{\"promptTokens\":120,\"completionTokens\":17,\"totalTokens\":137,\"data\":[{\"label\":[\"CONTENT\",\"DEVELOPMENT\"]}],\"hash\":\"55a6bd1896d723e07803bc309a0780e9a266cee091d15fd14862a40688025b3f\"}",
+                                "{\"promptTokens\":138,\"completionTokens\":17,\"totalTokens\":155,\"data\":[{\"label\":[\"CONTENT\",\"DEVELOPMENT\"]}],\"hash\":\"330ce3ae1d1c35a19f5bf96e33079fcc39ea3684d9cf5fdc264b990849850c43\",\"cached\":true}",
                                 ""
                             ]
                         }

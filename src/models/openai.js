@@ -108,8 +108,9 @@ class OpenAI extends Model {
         }
     }
 
+
     /**
-    * @param {string} prompt - The prompt to use for the completion
+    * @param {string | object} prompt - The prompt to use for the completion - can be a promort string or chat messages object
     * @param {Object} options - The options to use for the completion
     * @param {string} options.suffix - The suffix to use for the completion
     * @param {number} options.maxTokens - The maximum number of tokens to generate
@@ -120,6 +121,7 @@ class OpenAI extends Model {
     * @param {number} options.frequencyPenalty - The frequency penalty to use for the completion
     * @returns {string} - The completion
     * */
+    //run openia's text and chat completions
     async run(prompt, options) {
 
         let defaults = {
@@ -136,7 +138,7 @@ class OpenAI extends Model {
 
         // Automatically calculate max output tokens if not specified
         if (!config.maxTokens) {
-            const prompTokens = this.encoder.encode(prompt).length;
+            const prompTokens = this.encoder.encode(prompt.toString()).length;
             let foundModel = GPTModelTOKENS.filter( item => {
                 let x = item.regEx.test(this.model.toLowerCase())
                 return x
@@ -149,8 +151,13 @@ class OpenAI extends Model {
         let response;
         let completionsOpions = utilities.clone(config);
         completionsOpions.model = this.model;
-        if (this.model.startsWith("gpt-3.5-turbo")) {
-            completionsOpions.messages = [{role: "user", content: prompt}];
+        if (this.model.indexOf("gpt-3.5") > 1 || this.model.indexOf("gpt-4") > 1) {
+            if(utilities.isString(prompt)){
+                completionsOpions.messages = [{role: "user", content: prompt}];
+            } else {
+                completionsOpions.messages = prompt;
+            }
+            delete completionsOpions.prompt;
             response = await this.getCompletions(completionsOpions);
             data["text"] = response["choices"][0]["message"]["content"];
             data["role"] = response["choices"][0]["message"]["role"];
@@ -162,6 +169,7 @@ class OpenAI extends Model {
             if(response){
                 data["text"] = response["choices"][0]["text"];
             }
+            delete completionsOpions.messages;
         }
         Object.assign(data, response["usage"]);
         result.push(data);
@@ -173,27 +181,35 @@ class OpenAI extends Model {
      * @param {Object} options - The options to use for the completion
      * @param {string} options.model - The model to use for the completion
      * @param {string} options.prompt - The prompt to use for the completion
+     * @param {string} options.messages - The messages used for chat completion
      * @param {number} options.maxTokens - The maximum number of tokens to generate
      * @param {number} options.temperature - The temperature to use for the completion
      * @param {number} options.topP - The topP to use for the completion
      * @param {string} options.stop - The stop sequence to use for the completion
      * @returns {string} - The completion
      * */
+    // allows for both text and chat completions
     async getCompletions(options) {
         // look in cache first
      
-        const apiEndpoint = 'https://api.openai.com/v1/completions';
+        const apiEndpointA = 'https://api.openai.com/v1/completions';
+        const apiEndpointB = 'https://api.openai.com/v1/chat/completions';
+        const apiEndpoint = options.messages !== undefined ? apiEndpointB : apiEndpointA;
         const apiKey = this.apiKey;
     
         // Set up the request body with the given parameters
         const requestData = {
             model: options.model,
-            prompt: options.prompt,
             temperature: options.temperature,
             max_tokens: options.maxTokens,
             top_p: options.topP,
             stop: options.stop,
         };
+        if (options.prompt) {
+            requestData.prompt = options.prompt;
+        }else if (options.messages) {
+            requestData.messages = options.messages;
+        }
     
         const config = {
             headers: {
@@ -221,7 +237,6 @@ class OpenAI extends Model {
         
     }
     
-
 }
 
 module.exports = OpenAI;

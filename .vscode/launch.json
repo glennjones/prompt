@@ -18,7 +18,7 @@
             "skipFiles": [
                 "<node_internals>/**"
             ],
-            "program": "${workspaceFolder}/examples/ner01.js"
+            "program": "${workspaceFolder}/examples/ner01-chat.js"
         },
         {
             "name": "Debug Jest Tests",

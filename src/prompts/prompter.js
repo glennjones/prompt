@@ -109,14 +109,13 @@ class Prompter {
     }
 
     /**
-     * Run the model with the prompt
-     * @param {string} templateName
+     * Run the model with the prompt directly
+     * @param {string | object} prompt
      * @param {Object} options - Options to pass to the model and used to generate the prompt
      * @returns {Object} output
     */
-    async fit(templateName, options) {
+    async fitDirect(prompt, options) {
 
-        let prompt = this.generatePrompt(templateName, options);  
         let promptHash = this.hashPrompt(prompt);
         if(this.cache) {
             let cachedResult = await this.cache.get(promptHash);
@@ -124,12 +123,14 @@ class Prompter {
                 return cachedResult.result;
             }
         }
-      
+
         let output = await this.model.run(prompt, options);
         if(output){
             let out = output[0];
-            if(out.text) {
-                out.text += options.stop || '';
+            if(out.text && options && options.stop) {
+                out.text += options.stop;
+                out.text = this.parseJSON(out.text);
+            } else if(out.text) {
                 out.text = this.parseJSON(out.text);
             }
             out = this.formatOutput(out);
@@ -150,7 +151,18 @@ class Prompter {
         }else{
             return { err: 'error getting data, please check the console'};
         }
-        
+    }
+
+    /**
+     * Run the model with the prompt from a template
+     * @param {string} templateName
+     * @param {Object} options - Options to pass to the model and used to generate the prompt
+     * @returns {Object} output
+    */
+    async fit(templateName, options) {
+  
+        let prompt = this.generatePrompt(templateName, options); 
+        return this.fitDirect(prompt, options);
     }
 
     /**

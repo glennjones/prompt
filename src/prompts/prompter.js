@@ -138,14 +138,18 @@ class Prompter {
                 out.hash = promptHash;
             }
             if(this.cache) {
-                await this.cache.add(promptHash, {
+                let cacheObject = {
                     hash: promptHash,
                     prompt,
                     result: out,
                     created: new Date(),
-                    templateName,
-                    text: options.textInput,
-                });
+                    templateName: templateName || null,
+                    text: null,
+                }
+                if(options && options.textInput) {
+                    cacheObject.text = options.textInput;
+                }
+                await this.cache.add(promptHash, cacheObject);
             }
             return out;
         }else{

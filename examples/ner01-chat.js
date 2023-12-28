@@ -7,7 +7,7 @@ const apiKey = process.env.OPENAI_API_KEY;
 const {OpenAI, Prompter} = require('../index.js');
 
 async function test() {
-  let model = new OpenAI(apiKey, 'ft:gpt-3.5-turbo-1106:personal::8YeKzTz6');
+  let model = new OpenAI(apiKey, 'gpt-3.5-turbo');
   let prompt = new Prompter(model);
 
   const messages = [{"role": "system", "content": "You are a named entity recognition system focused on job title parsing."},

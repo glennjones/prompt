@@ -143,11 +143,10 @@ class Prompter {
                     prompt,
                     result: out,
                     created: new Date(),
-                    templateName: templateName || null,
-                    text: null,
                 }
-                if(options && options.textInput) {
-                    cacheObject.text = options.textInput;
+                if(options) {
+                    cacheObject.templateName = options.templateName !== undefined ? options.templateName : null;
+                    cacheObject.text = options.textInput !== undefined ? options.textInput : null;
                 }
                 await this.cache.add(promptHash, cacheObject);
             }

@@ -55,7 +55,7 @@ class MongodbCache extends Cache {
         .collection(this.collectionName)
         .insertOne(value);
       if (result.acknowledged == true) {
-        return doc;
+        return value;
       }
       return null;
     } catch (err) {
